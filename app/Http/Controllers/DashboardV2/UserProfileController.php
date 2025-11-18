@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\DashboardV2;
 
+use Carbon\Carbon;
 use App\Models\User;
+use App\Models\Order;
 use App\Models\OrderRating;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Carbon\Carbon;
-use App\Models\Order;
 use Illuminate\Support\Facades\DB;
+use App\Exports\OrderRatingsExport;
+use App\Http\Controllers\Controller;
 
 
 
@@ -18,7 +19,6 @@ class UserProfileController extends Controller
 {
     public function index()
     {
-        // dd('asda');
         $users = User::all();
 
         return view('dashboardv2.user', [
@@ -90,6 +90,25 @@ class UserProfileController extends Controller
         ])->first();
 
         return view('dashboard_v2.order_ratings', compact('orderRatings', 'averages', 'positivePercentages'));
+    }
+
+    public function exportRatings(Request $request)
+    {
+        $request->validate([
+            'export_date' => ['required', 'date'],
+        ]);
+
+        $exportDate = $request->input('export_date');
+
+        // Fetch ratings for the selected date
+        $ratings = OrderRating::with(['user', 'order'])
+            ->whereDate('created_at', $exportDate)
+            ->get();
+
+        // Export to Excel
+        $export = new OrderRatingsExport(null, null, $ratings);
+
+        return \Maatwebsite\Excel\Facades\Excel::download($export, "order_ratings_{$exportDate}.xlsx");
     }
 
     public function userMoreData(Request $request)

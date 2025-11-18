@@ -28,6 +28,7 @@ class EmailRequest extends FormRequest
             'email'        => [
                 'required',
                 'email',
+                'unique:users',
                 'max:190',
                 Rule::unique("users", "email")->ignore(auth()->user()->id)
             ],

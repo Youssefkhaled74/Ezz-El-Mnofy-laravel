@@ -252,9 +252,9 @@ class AppLibrary
     public static function currencyAmountFormat($amount): string
     {
         if (env('CURRENCY_POSITION') == CurrencyPosition::LEFT) {
-            return env('CURRENCY_SYMBOL') . number_format($amount, env('CURRENCY_DECIMAL_POINT'), '.', '');
+            return env('CURRENCY_SYMBOL') .' '. number_format($amount, env('CURRENCY_DECIMAL_POINT'), '.', ' ');
         }
-        return number_format($amount, env('CURRENCY_DECIMAL_POINT'), '.', '') . env('CURRENCY_SYMBOL');
+        return number_format($amount, env('CURRENCY_DECIMAL_POINT'), '.', '') .' '. env('CURRENCY_SYMBOL');
     }
 
     public static function flatAmountFormat($amount): string

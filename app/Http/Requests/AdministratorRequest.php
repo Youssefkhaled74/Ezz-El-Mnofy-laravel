@@ -47,7 +47,7 @@ class AdministratorRequest extends FormRequest
             ],
             'branch_id'             => ['nullable', 'numeric'],
             'status'                => ['required', 'numeric', 'max:24'],
-            'country_code'          => ['required', 'string', 'max:20'],
+            //'country_code'          => ['required', 'string', 'max:20'],
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use App\Http\Requests\BranchRequest;
 use App\Http\Requests\PaginateRequest;
 use App\Models\Branch;
@@ -34,7 +33,7 @@ class BranchService
         try {
             $requests    = $request->all();
             $method      = $request->get('paginate', 0) == 1 ? 'paginate' : 'get';
-            $methodValue = $request->get('paginate', 0) == 1 ? $request->get('per_page', 10) : '*';
+            $methodValue = $request->get('paginate', 0) == 1 ? $request->get('per_page', 15) : '*';
             $orderColumn = $request->get('order_column') ?? 'id';
             $orderType   = $request->get('order_type') ?? 'desc';
 
@@ -91,8 +90,6 @@ class BranchService
                 throw new Exception("Default branch not deletable", 422);
             }
         } catch (Exception $exception) {
-            // Log::info($exception->getMessage());
-            // throw new Exception($exception->getMessage(), 422);
             Log::info(QueryExceptionLibrary::message($exception));
             throw new Exception(QueryExceptionLibrary::message($exception), 422);
         }
@@ -109,10 +106,5 @@ class BranchService
             Log::info($exception->getMessage());
             throw new Exception($exception->getMessage(), 422);
         }
-    }
-    public function listByBrand($brandId, PaginateRequest $request)
-    {
-        return Branch::where('brand_id', $brandId)
-            ->paginate($request->get('per_page', 15));
     }
 }

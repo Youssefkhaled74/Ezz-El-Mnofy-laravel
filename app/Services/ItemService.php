@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-
 use App\Enums\Ask;
 use App\Enums\Status;
 use Exception;
@@ -35,59 +34,20 @@ class ItemService
     /**
      * @throws Exception
      */
-    public function list(PaginateRequest $request)
+    public function list(PaginateRequest $request, $branchId = null)
     {
         try {
             $requests    = $request->all();
             $method      = $request->get('paginate', 0) == 1 ? 'paginate' : 'get';
-            $methodValue = $request->get('paginate', 0) == 1 ? $request->get('per_page', 10) : '*';
-            $orderColumn = $request->get('order_column') ?? 'id';
-            $orderType   = $request->get('order_type') ?? 'desc';
-
-            return Item::with('media', 'category', 'tax')->where(function ($query) use ($requests) {
-                foreach ($requests as $key => $request) {
-                    if (in_array($key, $this->itemFilter)) {
-                        if ($key == "except") {
-                            $explodes = explode('|', $request);
-                            if (count($explodes)) {
-                                foreach ($explodes as $explode) {
-                                    $query->where('id', '!=', $explode);
-                                }
-                            }
-                        } else {
-                            if ($key == "item_category_id") {
-                                $query->where($key, $request);
-                            } else {
-                                $query->where($key, 'like', '%' . $request . '%');
-                            }
-                        }
-                    }
-                }
-            })->orderBy($orderColumn, $orderType)->$method(
-                $methodValue
-            );
-        } catch (Exception $exception) {
-            Log::info($exception->getMessage());
-            throw new Exception($exception->getMessage(), 422);
-        }
-    }
-    public function listByBrand(PaginateRequest $request, $brandId = null)
-    {
-        try {
-            $requests    = $request->all();
-            $method      = $request->get('paginate', 0) == 1 ? 'paginate' : 'get';
-            $methodValue = $request->get('paginate', 0) == 1 ? $request->get('per_page', 10) : '*';
+            $methodValue = $request->get('paginate', 0) == 1 ? $request->get('per_page', 15) : '*';
             $orderColumn = $request->get('order_column') ?? 'id';
             $orderType   = $request->get('order_type') ?? 'desc';
 
             $query = Item::with('media', 'category', 'tax');
-            if ($request->has('branch_id')) {
-                $branchId = $request->get('branch_id');
+            if ($branchId) {
                 $query->whereHas('branches', function ($q) use ($branchId) {
                     $q->where('branches.id', $branchId);
                 });
-            } else {
-                $query->where('brand_id', $brandId ?? 1);
             }
 
             $query->where(function ($query) use ($requests) {
@@ -95,8 +55,10 @@ class ItemService
                     if (in_array($key, $this->itemFilter)) {
                         if ($key == "except") {
                             $explodes = explode('|', $requestValue);
-                            foreach ($explodes as $explode) {
-                                $query->where('id', '!=', $explode);
+                            if (count($explodes)) {
+                                foreach ($explodes as $explode) {
+                                    $query->where('id', '!=', $explode);
+                                }
                             }
                         } else {
                             if ($key == "item_category_id") {
@@ -110,28 +72,6 @@ class ItemService
             });
 
             return $query->orderBy($orderColumn, $orderType)->$method($methodValue);
-        } catch (Exception $exception) {
-            Log::info($exception->getMessage());
-            throw new Exception($exception->getMessage(), 422);
-        }
-    }
-
-
-    public function mostPopularItemsByBrand($brandId, $branchId = null)
-    {
-        try {
-            $query = Item::query();
-    
-            if ($branchId) {
-                $query->whereHas('branches', function ($q) use ($branchId) {
-                    $q->where('branches.id', $branchId);
-                });
-            } else {
-                $query->where('brand_id', $brandId ?? 1);
-            }
-    
-            return $query->get();
-    
         } catch (Exception $exception) {
             Log::info($exception->getMessage());
             throw new Exception($exception->getMessage(), 422);
@@ -180,7 +120,7 @@ class ItemService
                         if (isset($variation['id'])) {
                             $variationIdsArray[] = $variation['id'];
                             ItemVariation::where('id', $variation['id'])->update([
-                                'name'             => $variation['name'],
+                                'name' => $variation['name'],
                                 'price' => $variation['price'],
                             ]);
                         } else {
@@ -258,29 +198,18 @@ class ItemService
         }
     }
 
-    public function featuredItems()
+    /**
+     * @throws Exception
+     */
+    public function featuredItems($branchId = null)
     {
         try {
-            return Item::where(['is_featured' => Ask::YES, 'status' => Status::ACTIVE])->inRandomOrder()->limit(8)->get();
-        } catch (Exception $exception) {
-            Log::info($exception->getMessage());
-            throw new Exception($exception->getMessage(), 422);
-        }
-    }
-    public function featuredItemsByBrand($brandId, $branchId = null)
-    {
-        try {
-            $query = Item::where('is_featured', Ask::YES)
-                ->where('status', Status::ACTIVE);
-
+            $query = Item::where(['is_featured' => Ask::YES, 'status' => Status::ACTIVE]);
             if ($branchId) {
                 $query->whereHas('branches', function ($q) use ($branchId) {
                     $q->where('branches.id', $branchId);
                 });
-            } else {
-                $query->where('brand_id', $brandId ?? 1);
             }
-
             return $query->inRandomOrder()->limit(8)->get();
         } catch (Exception $exception) {
             Log::info($exception->getMessage());
@@ -288,24 +217,43 @@ class ItemService
         }
     }
 
-    public function mostPopularItems()
+    /**
+     * @throws Exception
+     */
+    public function mostPopularItems($branchId = null)
     {
         try {
-            return Item::withCount('orders')->where(['status' => Status::ACTIVE])->orderBy('orders_count', 'desc')->limit(6)->get();
+            $query = Item::withCount('orders')->where(['status' => Status::ACTIVE]);
+            if ($branchId) {
+                $query->whereHas('branches', function ($q) use ($branchId) {
+                    $q->where('branches.id', $branchId);
+                });
+            }
+            return $query->orderBy('orders_count', 'desc')->limit(6)->get();
         } catch (Exception $exception) {
             Log::info($exception->getMessage());
             throw new Exception($exception->getMessage(), 422);
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function itemReport(PaginateRequest $request)
     {
         try {
             $requests    = $request->all();
             $method      = $request->get('paginate', 0) == 1 ? 'paginate' : 'get';
-            $methodValue = $request->get('paginate', 0) == 1 ? $request->get('per_page', 10) : '*';
-            return Item::withCount('orders')->where(function ($query) use ($requests) {
-                if (isset($requests['from_date'])  && isset($requests['to_date'])) {
+            $methodValue = $request->get('paginate', 0) == 1 ? $request->get('per_page', 15) : '*';
+            $query = Item::withCount('orders');
+            if (isset($requests['branch_id'])) {
+                $branchId = $requests['branch_id'];
+                $query->whereHas('branches', function ($q) use ($branchId) {
+                    $q->where('branches.id', $branchId);
+                });
+            }
+            $query->where(function ($query) use ($requests) {
+                if (isset($requests['from_date']) && isset($requests['to_date'])) {
                     $first_date = date('Y-m-d', strtotime($requests['from_date']));
                     $last_date  = date('Y-m-d', strtotime($requests['to_date']));
                     $query->whereDate('created_at', '>=', $first_date)->whereDate(
@@ -328,9 +276,8 @@ class ItemService
                         }
                     }
                 }
-            })->orderBy('orders_count', 'desc')->$method(
-                $methodValue
-            );
+            });
+            return $query->orderBy('orders_count', 'desc')->$method($methodValue);
         } catch (Exception $exception) {
             Log::info($exception->getMessage());
             throw new Exception($exception->getMessage(), 422);

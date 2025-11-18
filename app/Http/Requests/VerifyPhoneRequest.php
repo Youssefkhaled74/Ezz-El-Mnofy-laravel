@@ -30,7 +30,7 @@ class VerifyPhoneRequest extends FormRequest
             'code'  => ['required', 'numeric'],
             'phone' => ['required', 'string', 'max:180'],
             'token' => ['required', 'max:180'],
-            'type'  => ['nullable', 'in:phone,whatsapp'],
+			//'type'  => ['nullable', 'in:phone,whatsapp'],
         ];
     }
 }

@@ -13,6 +13,7 @@ class CompanyController extends AdminController
 
     public function __construct(CompanyService $companyService)
     {
+		dd(1);
         parent::__construct();
         $this->companyService = $companyService;
         $this->middleware(['permission:settings'])->only('update');
@@ -20,6 +21,7 @@ class CompanyController extends AdminController
 
     public function index() : \Illuminate\Http\Response | CompanyResource | \Illuminate\Contracts\Foundation\Application | \Illuminate\Contracts\Routing\ResponseFactory
     {
+		dd(777);
         try {
             return new CompanyResource($this->companyService->list());
         } catch (Exception $exception) {

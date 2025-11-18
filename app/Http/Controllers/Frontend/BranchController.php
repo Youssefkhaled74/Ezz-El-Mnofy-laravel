@@ -19,22 +19,19 @@ class BranchController extends Controller
         $this->branchService = $branch;
     }
 
-    public function index(Brand $brand, PaginateRequest $request)
+    public function index(PaginateRequest $request)
     {
         try {
-            $branches = $this->branchService->listByBrand($brand->id, $request);
+            $branches = $this->branchService->list($request);
             return BranchResource::collection($branches);
         } catch (Exception $exception) {
             return response(['status' => false, 'message' => $exception->getMessage()], 422);
         }
     }
 
-    public function show(Brand $brand, Branch $branch)
+    public function show(Branch $branch)
     {
         try {
-            if ($branch->brand_id !== $brand->id) {
-                return response(['status' => false, 'message' => 'Branch does not belong to the selected brand'], 404);
-            }
             return new BranchResource($branch);
         } catch (Exception $exception) {
             return response(['status' => false, 'message' => $exception->getMessage()], 422);

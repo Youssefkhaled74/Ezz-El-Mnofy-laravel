@@ -64,7 +64,7 @@ class AdministratorService
                     'status'            => $request->status,
                     'email_verified_at' => now(),
                     'branch_id'         => $request->branch_id,
-                    'country_code'      => $request->country_code,
+                    'country_code'      => +20,
                     'is_guest'          => Ask::NO,
                 ]);
                 $this->user->assignRole(EnumRole::ADMIN);

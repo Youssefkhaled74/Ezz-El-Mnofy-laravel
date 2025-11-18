@@ -129,7 +129,7 @@ class CouponController extends AdminController
             'code' => 'required|string|unique:coupons,code',
             'discount' => 'required|numeric|min:0',
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+			'end_date' => ['required', 'date', 'after_or_equal:today', 'after_or_equal:start_date'],
             'user_id' => 'required|exists:users,id',
             'title' => 'required|string|max:255',
             'description' => 'required|string',

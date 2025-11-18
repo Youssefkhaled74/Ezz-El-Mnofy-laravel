@@ -21,33 +21,50 @@ class OrderPushNotificationBuilder
     {
         $this->orderId = $orderId;
         $this->status  = $status;
+		//dd($status);
         $this->order   = FrontendOrder::find($orderId);
     }
 
-    public function send(): void
-    {
-        if (!blank($this->order)) {
-            $user = User::find($this->order->user_id);
-            if (!blank($user)) {
-                if (!blank($user->web_token) || !blank($user->device_token)) {
-                    $fcmTokenArray = [];
-                    if (!blank($user->web_token)) {
-                        $fcmTokenArray[] = $user->web_token;
-                    }
-                    if (!blank($user->device_token)) {
-                        $fcmTokenArray[] = $user->device_token;
-                    }
-                    $this->message($fcmTokenArray, $this->status, $this->orderId);
+public function send(): void
+{
+    //dd('Start', $this->order); // هل في order أصلاً؟
+
+    if (!blank($this->order)) {
+        $user = User::find($this->order->user_id);
+        //dd('User check', $user);
+
+        if (!blank($user)) {
+
+            if (!blank($user->web_token) || !blank($user->device_token)) {
+                $fcmTokenArray = [];
+				           // dd('User tokens', $user->web_token, $user->device_token);
+
+
+                if (!blank($user->web_token)) {
+                    $fcmTokenArray[] = $user->web_token;
                 }
+                if (!blank($user->device_token)) {
+                    $fcmTokenArray[] = $user->device_token;
+                }
+
+                //dd('Tokens:', $fcmTokenArray);
+				$orderss = $this->status;
+				//dd($orderss);
+                $this->message($fcmTokenArray, $this->status, $this->orderId);
+				
             }
         }
     }
+}
 
     private function message($fcmTokenArray, $status, $orderId): void
     {
+		//dd($status);
         if ($status == OrderStatus::PENDING) {
+			//dd($status);
             $this->pending($fcmTokenArray, $orderId);
         } elseif ($status == OrderStatus::ACCEPT) {
+			//dd('asdasdas');
             $this->confirmation($fcmTokenArray, $orderId);
         } elseif ($status == OrderStatus::PROCESSING) {
             $this->processing($fcmTokenArray, $orderId);
@@ -91,6 +108,7 @@ class OrderPushNotificationBuilder
     {
         $notificationAlert = NotificationAlert::where(['language' => 'order_confirmation_message'])->first();
         if ($notificationAlert && $notificationAlert->push_notification == SwitchBox::ON) {
+			//dd($notificationAlert->push_notification_message);
             $this->notification($fcmTokenArray, $orderId, $notificationAlert->push_notification_message);
         }
     }

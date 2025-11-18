@@ -181,7 +181,13 @@ class CouponService
     public function couponDateWise(): \Illuminate\Database\Eloquent\Collection
     {
         try {
-            return Coupon::all()->filter(function ($item) {
+            $userId = auth()->id(); // Get the authenticated user's ID
+
+            return Coupon::where(function ($query) use ($userId) {
+                $query->whereNull('user_id') // Coupons with no specific user
+                    ->orWhere('user_id', $userId); // Coupons assigned to the authenticated user
+            })->get()->filter(function ($item) {
+                // Filter coupons based on the current date being within the start and end date
                 if (Carbon::now()->between($item->start_date, $item->end_date)) {
                     return $item;
                 }
