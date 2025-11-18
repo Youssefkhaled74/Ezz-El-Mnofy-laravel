@@ -14,8 +14,15 @@
                             <ExcelComponent :method="xls" />
                         </div>
                     </div>
-                    <ItemCreateComponent :props="props" v-if="permissionChecker('items_create')" />
-                </div>
+        <!-- Replace ItemCreateComponent with this button -->
+        <button
+            v-if="permissionChecker('items_create')"
+            @click="redirectToCreateItem"
+            class="db-btn text-white bg-primary"
+        >
+            <i class="lab lab-add-circle-line lab-font-size-16"></i>
+            <span>{{ $t('button.create_item') }}</span>
+        </button>                </div>
             </div>
 
             <div class="table-filter-div">
@@ -195,7 +202,6 @@ export default {
         PaginationSMBox,
         PaginationBox,
         PaginationTextComponent,
-        ItemCreateComponent,
         LoadingComponent,
         SmIconSidebarModalEditComponent,
         SmIconDeleteComponent,
@@ -304,6 +310,9 @@ export default {
 
     },
     methods: {
+        redirectToCreateItem() {
+            window.location.href = '/create-item';
+        },
         permissionChecker(e) {
             return appService.permissionChecker(e);
         },

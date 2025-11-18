@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,8 +8,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <!-- Custom CSS -->
     <style>
         :root {
@@ -23,42 +20,87 @@
 
         body {
             background-color: #f5f5f5;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.5;
         }
 
         .navbar {
+            background-color: white;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            background-color: white !important;
         }
 
-        .bg-red {
+        .card {
+            border: none;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .card-header {
             background-color: var(--primary-red);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem 0.75rem 0 0;
         }
 
-        .text-white {
-            color: #ffffff !important;
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        .form-label {
+            color: var(--dark-gray);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+        }
+
+        .form-control,
+        .form-select {
+            border-radius: 0.375rem;
+            border: 1px solid #ced4da;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
+            height: 38px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
+
+        .input-group-text {
+            background-color: var(--primary-red);
+            color: white;
+            border-color: var(--primary-red);
+            font-size: 0.9rem;
         }
 
         .btn-red {
             background-color: var(--primary-red);
             border-color: var(--primary-red);
-            color: #ffffff;
+            color: white;
             padding: 0.5rem 1.5rem;
             font-weight: 500;
-            transition: all 0.3s ease;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
         }
 
-        .btn-red:hover,
-        .btn-red:focus {
+        .btn-red:hover {
             background-color: var(--dark-red);
             border-color: var(--dark-red);
-            transform: translateY(-1px);
             box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
         }
 
         .btn-outline-red {
             border-color: var(--primary-red);
             color: var(--primary-red);
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            border-radius: 0.375rem;
+            transition: all 0.2s ease;
         }
 
         .btn-outline-red:hover {
@@ -66,43 +108,15 @@
             color: white;
         }
 
-        .card {
-            border-radius: 0.5rem;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        .nav-back-btn {
+            color: var(--primary-red);
+            font-weight: 500;
+            text-decoration: none;
+            transition: color 0.2s ease;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .card-header {
-            border-bottom: none;
-            padding: 1.25rem 1.5rem;
-        }
-
-        .card-body {
-            padding: 2rem;
-        }
-
-        .form-label {
-            color: var(--dark-gray);
-            font-weight: 600;
-        }
-
-        .form-control,
-        .form-select {
-            border-radius: 0.375rem;
-            border-color: #ced4da;
-            padding: 0.5rem 0.75rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-control:focus,
-        .form-select:focus {
-            border-color: var(--primary-red);
-            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        .nav-back-btn:hover {
+            color: var(--dark-red);
         }
 
         .table {
@@ -121,29 +135,25 @@
             vertical-align: middle;
         }
 
-        .nav-back-btn {
-            color: var(--primary-red);
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .nav-back-btn:hover {
-            color: var(--dark-red);
-            transform: translateX(-3px);
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
         }
     </style>
 </head>
-
 <body>
     <!-- Navigation Bar -->
     @include('layouts.partials.navbar')
 
-
     <!-- Main Content -->
     <div class="container py-4">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-red text-white">
-                <h2 class="mb-0"><i class="bi bi-box-seam me-2"></i>Items - Manage Relations</h2>
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h4 class="mb-0"><i class="bi bi-box-seam me-2"></i>Items - Manage Relations</h4>
+                <a href="{{ route('admin.item.index') }}" class="nav-back-btn">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Dashboard
+                </a>
             </div>
             <div class="card-body">
                 @if (session('success'))
@@ -153,28 +163,39 @@
                     </div>
                 @endif
 
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
                 <!-- Search and Filter Form -->
                 <form method="GET" action="{{ route('items.branch-index') }}" class="mb-4">
-                    <div class="row g-3">
-                        <div class="col-md-6">
+                    <div class="form-grid">
+                        <div>
+                            <label for="search" class="form-label"><i class="bi bi-search me-1"></i>Search Items</label>
                             <div class="input-group">
-                                <span class="input-group-text bg-light"><i class="bi bi-search"></i></span>
-                                <input type="text" name="search" class="form-control"
-                                    placeholder="Search items by name..." value="{{ $search ?? '' }}">
+                                <span class="input-group-text"><i class="bi bi-search"></i></span>
+                                <input type="text" name="search" class="form-control" placeholder="Search items by name..." value="{{ $search ?? '' }}">
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <select name="category_id" class="form-select">
+                        <div>
+                            <label for="category_id" class="form-label"><i class="bi bi-tag me-1"></i>Category</label>
+                            <select name="category_id" id="category_id" class="form-select">
                                 <option value="">All Categories</option>
                                 @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}"
-                                        {{ $categoryId == $category->id ? 'selected' : '' }}>
+                                    <option value="{{ $category->id }}" {{ $categoryId == $category->id ? 'selected' : '' }}>
                                         {{ $category->name }}
                                     </option>
                                 @endforeach
                             </select>
                         </div>
-                        <div class="col-md-2">
+                        <div class="d-flex align-items-end">
                             <button type="submit" class="btn btn-red w-100">
                                 <i class="bi bi-funnel me-1"></i>Filter
                             </button>
@@ -190,8 +211,7 @@
                             <span class="badge bg-light text-dark me-2">Search: {{ $search }}</span>
                         @endif
                         @if ($categoryId)
-                            <span class="badge bg-light text-dark">Category:
-                                {{ $categories->find($categoryId)->name ?? 'N/A' }}</span>
+                            <span class="badge bg-light text-dark">Category: {{ $categories->find($categoryId)->name ?? 'N/A' }}</span>
                         @endif
                         <a href="{{ route('items.branch-index') }}" class="text-decoration-none ms-2">
                             <i class="bi bi-x-circle"></i> Clear Filters
@@ -203,10 +223,9 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th>Name</th>
+                                <th>Name (English)</th>
                                 <th>Category</th>
                                 <th>Brand</th>
-                                <th>Branches</th>
                                 <th>Price</th>
                                 <th>Status</th>
                                 <th>Image</th>
@@ -216,16 +235,9 @@
                         <tbody>
                             @forelse ($items as $item)
                                 <tr>
-                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->name['en'] ?? 'N/A' }}</td>
                                     <td>{{ $item->category->name ?? 'N/A' }}</td>
                                     <td>{{ $item->brand->name ?? 'N/A' }}</td>
-                                    <td>
-                                        @if ($item->branches->isEmpty())
-                                            N/A
-                                        @else
-                                            {{ $item->branches->pluck('name')->join(', ') }}
-                                        @endif
-                                    </td>
                                     <td>{{ number_format($item->price, 2) }}</td>
                                     <td>
                                         <span class="badge {{ $item->status == 5 ? 'bg-success' : 'bg-secondary' }}">
@@ -233,25 +245,26 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <img src="{{ $item->thumb }}" alt="{{ $item->name }}"
-                                            style="width: 50px; border-radius: 0.25rem;">
+                                        @if ($item->thumb)
+                                            <img src="{{ $item->thumb }}" alt="{{ $item->name['en'] ?? 'Item' }}" style="width: 50px; border-radius: 0.25rem;">
+                                        @else
+                                            N/A
+                                        @endif
                                     </td>
                                     <td>
                                         <div class="d-flex gap-2">
-                                            <a href="{{ route('items.edit-brand', $item) }}"
-                                                class="btn btn-sm btn-outline-red">
+                                            <a href="{{ route('items.edit-brand', $item) }}" class="btn btn-sm btn-outline-red">
                                                 <i class="bi bi-shop-window me-1"></i>Change Brand
                                             </a>
-                                            <a href="{{ route('items.edit-branches', $item) }}"
-                                                class="btn btn-sm btn-outline-red">
-                                                <i class="bi bi-geo-alt me-1"></i>Change Branches
+                                            <a href="{{ route('items.edit', $item->id) }}" class="btn btn-sm btn-outline-red">
+                                                <i class="bi bi-pencil me-1"></i>Update
                                             </a>
                                         </div>
                                     </td>
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="text-center text-muted">No items found.</td>
+                                    <td colspan="7" class="text-center text-muted">No items found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -267,6 +280,14 @@
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script>
+        // Clear invalid feedback on input change
+        document.querySelectorAll('.form-control, .form-select').forEach(input => {
+            input.addEventListener('input', () => {
+                input.classList.remove('is-invalid');
+            });
+        });
+    </script>
 </body>
-
 </html>

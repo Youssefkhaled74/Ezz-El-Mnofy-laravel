@@ -45,6 +45,8 @@ export const auth = {
             return new Promise((resolve, reject) => {
                 axios.post('auth/login', payload).then((res) => {
                     context.commit('authLogin', res.data);
+                    window.location.reload()
+                    console.log(res.data)
                     resolve(res);
                 }).catch((err) => {
                     reject(err);
@@ -67,6 +69,7 @@ export const auth = {
             return new Promise((resolve, reject) => {
                 axios.post('auth/logout').then((res) => {
                     context.commit('authLogout');
+                    window.location.reload()
                     resolve(res);
                 }).catch((err) => {
                     reject(err);

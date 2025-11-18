@@ -304,21 +304,6 @@
                             <button type="button" class="btn btn-sm btn-outline-danger" id="deselect-all">
                                 <i class="bi bi-x-circle me-1"></i>Deselect All
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary quick-filter-btn" data-filter="north">
-                                <i class="bi bi-compass me-1"></i>North
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary quick-filter-btn" data-filter="south">
-                                <i class="bi bi-compass me-1"></i>South
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary quick-filter-btn" data-filter="east">
-                                <i class="bi bi-compass me-1"></i>East
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary quick-filter-btn" data-filter="west">
-                                <i class="bi bi-compass me-1"></i>West
-                            </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary quick-filter-btn" data-filter="central">
-                                <i class="bi bi-compass me-1"></i>Central
-                            </button>
                         </div>
 
                         <!-- Enhanced Select2 with Search -->

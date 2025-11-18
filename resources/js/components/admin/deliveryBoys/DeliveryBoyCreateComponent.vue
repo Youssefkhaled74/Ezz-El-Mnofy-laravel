@@ -66,25 +66,42 @@
                         </div>
                         <small class="db-field-alert" v-if="errors.status">{{ errors.status[0] }}</small>
                     </div>
+					<!-- Password -->
+					<div class="form-col-12 sm:form-col-6 relative">
+						<label for="password" class="db-field-title required">{{ $t("label.password") }}</label>
+						<input
+							:type="showPassword ? 'text' : 'password'"
+							v-model="props.form.password"
+							:class="errors.password ? 'invalid' : ''"
+							id="password"
+							class="db-field-control pr-10"
+							autocomplete="off"
+						/>
+						<!-- Eye icon -->
+						<span @click="showPassword = !showPassword" class="absolute right-2 top-9 cursor-pointer">
+							<i :class="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+						</span>
+						<small class="db-field-alert" v-if="errors.password">{{ errors.password[0] }}</small>
+					</div>
 
-                    <div class="form-col-12 sm:form-col-6">
-                        <label for="password" class="db-field-title required">{{ $t("label.password") }}</label>
-                        <input v-model="props.form.password" v-bind:class="errors.password ? 'invalid' : ''" type="password"
-                            id="password" class="db-field-control" autocomplete="off" />
-                        <small class="db-field-alert" v-if="errors.password">{{ errors.password[0] }}</small>
-                    </div>
+					<!-- Password Confirmation -->
+					<div class="form-col-12 sm:form-col-6 relative">
+						<label for="password_confirmation" class="db-field-title required">{{ $t("label.password_confirmation") }}</label>
+						<input
+							:type="showPasswordConfirmation ? 'text' : 'password'"
+							v-model="props.form.password_confirmation"
+							:class="errors.password_confirmation ? 'invalid' : ''"
+							id="password_confirmation"
+							class="db-field-control pr-10"
+							autocomplete="off"
+						/>
+						<!-- Eye icon -->
+						<span @click="showPasswordConfirmation = !showPasswordConfirmation" class="absolute right-2 top-9 cursor-pointer">
+							<i :class="showPasswordConfirmation ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+						</span>
+						<small class="db-field-alert" v-if="errors.password_confirmation">{{ errors.password_confirmation[0] }}</small>
+					</div>
 
-                    <div class="form-col-12 sm:form-col-6">
-                        <label for="password_confirmation" class="db-field-title required">{{
-                            $t("label.password_confirmation")
-                        }}</label>
-                        <input v-model="props.form.password_confirmation"
-                            v-bind:class="errors.password_confirmation ? 'invalid' : ''" type="password"
-                            id="password_confirmation" class="db-field-control" autocomplete="off" />
-                        <small class="db-field-alert" v-if="errors.password_confirmation">{{
-                            errors.password_confirmation[0]
-                        }}</small>
-                    </div>
 
                     <div class="form-col-12 sm:form-col-6" v-if="branches.length > 1 && authBranch === 0">
                         <label class="db-field-title required" for="branch_id">{{ $t("label.branch_id") }}</label>
@@ -247,4 +264,9 @@ export default {
         },
     },
 };
+	
+	import { ref } from "vue"
+
+const showPassword = ref(false)
+const showPasswordConfirmation = ref(false)
 </script>

@@ -148,7 +148,7 @@
                 @endif
 
                 <div class="mb-4">
-                    <form action="{{ route('dashboard') }}" method="GET" class="search-form">
+                    <form action="{{ route('dashboard.userMoreData') }}" method="GET" class="search-form">
                         <div class="input-group">
                             <input type="text" name="search" class="form-control" placeholder="Search by name or email" value="{{ request('search') }}">
                             <button type="submit" class="btn btn-red"><i class="bi bi-search"></i></button>

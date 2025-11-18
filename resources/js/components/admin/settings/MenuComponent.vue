@@ -41,26 +41,26 @@
                 <i class="lab lab-social-media text-sm"></i>
                 {{ $t("menu.social_media") }}
             </router-link>
-            <router-link :to="{ name: 'admin.settings.cookies' }" class="db-tab-btn">
+            <!-- <router-link :to="{ name: 'admin.settings.cookies' }" class="db-tab-btn">
                 <i class="lab lab-cookies text-sm"></i>
                 {{ $t("menu.cookies") }}
-            </router-link>
-            <router-link :to="{ name: 'admin.settings.analytic' }" class="db-tab-btn">
+            </router-link> -->
+            <!-- <router-link :to="{ name: 'admin.settings.analytic' }" class="db-tab-btn">
                 <i class="lab lab-analytics text-sm"></i>
                 {{ $t("menu.analytics") }}
-            </router-link>
-            <router-link :to="{ name: 'admin.settings.theme' }" class="db-tab-btn">
+            </router-link> -->
+            <!-- <router-link :to="{ name: 'admin.settings.theme' }" class="db-tab-btn">
                 <i class="lab lab-theme text-sm"></i>
                 {{ $t("menu.theme") }}
-            </router-link>
-            <router-link :to="{ name: 'admin.settings.timeSlot' }" class="db-tab-btn">
+            </router-link> -->
+            <!-- <router-link :to="{ name: 'admin.settings.timeSlot' }" class="db-tab-btn">
                 <i class="lab lab-time-slots text-sm"></i>
                 {{ $t("menu.time_slots") }}
-            </router-link>
-            <router-link :to="{ name: 'admin.settings.slider' }" class="db-tab-btn">
+            </router-link> -->
+            <!-- <router-link :to="{ name: 'admin.settings.slider' }" class="db-tab-btn">
                 <i class="lab lab-sliders text-sm"></i>
                 {{ $t("menu.sliders") }}
-            </router-link>
+            </router-link> -->
             <router-link :to="{ name: 'admin.settings.currency' }" class="db-tab-btn">
                 <i class="lab lab-currencies text-sm"></i>
                 {{ $t("menu.currencies") }}
@@ -69,18 +69,18 @@
                 <i class="lab lab-item-categories text-sm"></i>
                 {{ $t("menu.item_categories") }}
             </router-link>
-            <router-link :to="{ name: 'admin.settings.itemAttribute' }" class="db-tab-btn">
+            <!-- <router-link :to="{ name: 'admin.settings.itemAttribute' }" class="db-tab-btn">
                 <i class="lab lab-item-attributes text-sm"></i>
                 {{ $t("menu.item_attributes") }}
-            </router-link>
+            </router-link> -->
             <router-link :to="{ name: 'admin.settings.tax' }" class="db-tab-btn">
                 <i class="lab lab-taxes text-sm"></i>
                 {{ $t("menu.taxes") }}
             </router-link>
-            <router-link :to="{ name: 'admin.settings.page' }" class="db-tab-btn">
+            <!-- <router-link :to="{ name: 'admin.settings.page' }" class="db-tab-btn">
                 <i class="lab lab-pages text-sm"></i>
                 {{ $t("menu.pages") }}
-            </router-link>
+            </router-link> -->
             <router-link :to="{ name: 'admin.settings.role' }" class="db-tab-btn">
                 <i class="lab lab-role-permissions text-sm"></i>
                 {{ $t("menu.role_permissions") }}
@@ -97,10 +97,10 @@
                 <i class="lab lab-payment-gateway text-sm"></i>
                 {{ $t("menu.payment_gateway") }}
             </router-link>
-            <router-link :to="{ name: 'admin.settings.license' }" class="db-tab-btn">
+            <!-- <router-link :to="{ name: 'admin.settings.license' }" class="db-tab-btn">
                 <i class="lab lab-license text-sm"></i>
                 {{ $t("menu.license") }}
-            </router-link>
+            </router-link> -->
         </nav>
     </div>
 </template>

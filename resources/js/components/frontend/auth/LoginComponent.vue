@@ -119,25 +119,31 @@ export default {
         }
     },
     methods: {
-        login: function () {
-            try {
-                this.loading.isActive = true;
-                this.$store.dispatch('login', this.form).then((res) => {
-                    this.loading.isActive = false;
-                    alertService.success(res.data.message);
-                    if (this.carts.length > 0) {
-                        router.push({name: "frontend.checkout"});
-                    } else {
-                        router.push({name: "frontend.home"});
-                    }
-                }).catch((err) => {
-                    this.loading.isActive = false;
-                    this.errors = err.response.data.errors;
-                })
-            } catch (err) {
-                this.loading.isActive = false;
-            }
-        },
+       login: function () {
+			try {
+				this.loading.isActive = true;
+				this.$store.dispatch('login', this.form).then((res) => {
+					 this.loading.isActive = false;
+					alertService.success(res.data.message);
+
+					let targetRoute = { name: "admin.dashboard" }; 
+
+					if (this.carts.length > 0) {
+						targetRoute = { name: "frontend.checkout" };
+					} else {
+						targetRoute = { name: "frontend.home" };
+					}
+
+					router.push(targetRoute);
+				}).catch((err) => {
+					this.loading.isActive = false;
+					this.errors = err.response.data.errors;
+				})
+			} catch (err) {
+				this.loading.isActive = false;
+			}
+		},
+
         close: function () {
             this.errors = {}
         },

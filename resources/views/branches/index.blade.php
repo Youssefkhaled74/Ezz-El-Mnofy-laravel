@@ -134,63 +134,80 @@
     @include('layouts.partials.navbar')
 
 
-    <!-- Main Content -->
-    <div class="container py-4">
-        <div class="card shadow-sm border-0">
-            <div class="card-header bg-red text-white">
-                <h2 class="mb-0"><i class="bi bi-geo-alt me-2"></i>Branches</h2>
-            </div>
-            <div class="card-body">
-                @if (session('success'))
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                @endif
+<!-- Main Content -->
+<div class="container py-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-red text-white">
+            <h2 class="mb-0"><i class="bi bi-geo-alt me-2"></i>Branches</h2>
+        </div>
+        <div class="card-body">
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ session('success') }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
 
-                <div class="table-responsive">
-                    <table class="table table-hover">
-                        <thead>
+            <!-- Search Form -->
+            <div class="mb-4">
+                <form action="{{ route('branches.index') }}" method="GET" class="d-flex align-items-center">
+                    <div class="input-group">
+                        <input type="text" name="search" class="form-control" placeholder="Search by name, email, phone, city, or brand" value="{{ request('search') }}">
+                        <button type="submit" class="btn btn-red"><i class="bi bi-search me-2"></i>Search</button>
+                    </div>
+                    @if (request('search'))
+                        <a href="{{ route('branches.index') }}" class="btn btn-outline-red ms-3">Clear</a>
+                    @endif
+                </form>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>City</th>
+                            <th>Brand</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($branches as $branch)
                             <tr>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>City</th>
-                                <th>Brand</th>
-                                <th>Status</th>
-                                <th>Actions</th>
+                                <td>{{ $branch->name }}</td>
+                                <td>{{ $branch->email ?? 'N/A' }}</td>
+                                <td>{{ $branch->phone ?? 'N/A' }}</td>
+                                <td>{{ $branch->city ?? 'N/A' }}</td>
+                                <td>{{ $branch->brand->name ?? 'N/A' }}</td>
+                                <td>
+                                    <span class="badge {{ $branch->status ? 'bg-success' : 'bg-secondary' }}">
+                                        {{ $branch->status == 5 ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="{{ route('branches.edit-brand', $branch) }}" class="btn btn-sm btn-outline-red">
+                                        <i class="bi bi-pencil me-1"></i>Change Brand
+                                    </a>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($branches as $branch)
-                                <tr>
-                                    <td>{{ $branch->name }}</td>
-                                    <td>{{ $branch->email ?? 'N/A' }}</td>
-                                    <td>{{ $branch->phone ?? 'N/A' }}</td>
-                                    <td>{{ $branch->city ?? 'N/A' }}</td>
-                                    <td>{{ $branch->brand->name ?? 'N/A' }}</td>
-                                    <td>
-                                        <span class="badge {{ $branch->status ? 'bg-success' : 'bg-secondary' }}">
-                                            {{ $branch->status == 5 ? 'Active' : 'Inactive' }}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <a href="{{ route('branches.edit-brand', $branch) }}" class="btn btn-sm btn-outline-red">
-                                            <i class="bi bi-pencil me-1"></i>Change Brand
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-                
-                <div class="mt-4">
-                    {{ $branches->links('pagination::bootstrap-5') }}
-                </div>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="text-center">No branches found.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4">
+                {{ $branches->appends(request()->query())->links('pagination::bootstrap-5') }}
             </div>
         </div>
     </div>
+</div>
 
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

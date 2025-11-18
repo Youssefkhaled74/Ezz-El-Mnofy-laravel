@@ -56,46 +56,49 @@
                                         Unknown
                                     @endif
                                 </td>
-                                <td>
-                                    @if ($order->status == 4)
-                                        <form action="{{ route('chef.orders.updateStatus', $order) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="form-check form-switch">
-                                                <input type="hidden" name="status" value="7">
-                                                <input type="checkbox" class="form-check-input" id="statusSwitch{{ $order->id }}" 
-                                                       name="toggle" 
-                                                       onchange="this.form.submit()"
-                                                       {{ ($order->status == 1 || $order->status == 4) ? '' : 'checked' }}>
-                                                <label class="form-check-label" for="statusSwitch{{ $order->id }}">Processing</label>
-                                            </div>
-                                        </form>
-                                    @elseif (in_array($order->status, [10, 13, 16, 19, 22]))
-                                        <span class="text-muted">No Action Available</span>
-                                    @else
-                                        <form action="{{ route('chef.orders.updateStatus', $order) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="form-check form-switch">
-                                                <input type="hidden" name="status" value="7">
-                                                <input type="checkbox" class="form-check-input" id="statusSwitch{{ $order->id }}" 
-                                                       name="toggle" 
-                                                       onchange="this.form.submit()"
-                                                       checked>
-                                                <label class="form-check-label" for="statusSwitch{{ $order->id }}">Processing</label>
-                                            </div>
-                                        </form>
-                                    @endif
-                                </td>
+                               <td>
+    @if ($order->status == 4 || $order->status == 7)
+        <form action="{{ route('chef.orders.updateStatus', $order) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="form-check form-switch">
+                <input type="hidden" name="status" value="7">
+                <input type="checkbox" class="form-check-input" id="statusSwitch{{ $order->id }}" 
+                       name="toggle" 
+                       onchange="this.form.submit()"
+                       {{ ($order->status == 7) ? 'checked disabled' : '' }}>
+                <label class="form-check-label" for="statusSwitch{{ $order->id }}">Processing</label>
+            </div>
+        </form>
+    @elseif (in_array($order->status, [10, 13, 16, 19, 22]))
+        <span class="text-muted">No Action Available</span>
+    @else
+        <form action="{{ route('chef.orders.updateStatus', $order) }}" method="POST">
+            @csrf
+            @method('PUT')
+            <div class="form-check form-switch">
+                <input type="hidden" name="status" value="7">
+                <input type="checkbox" class="form-check-input" id="statusSwitch{{ $order->id }}" 
+                       name="toggle" 
+                       onchange="this.form.submit()"
+                       checked disabled>
+                <label class="form-check-label" for="statusSwitch{{ $order->id }}">Processing</label>
+            </div>
+        </form>
+    @endif
+</td>
+
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="mt-3">
-            <a href="{{ route('chef.logout') }}" class="btn btn-danger">Logout</a>
-        </div>
+        <form method="POST" action="{{ route('chef.logout') }}">
+			@csrf
+			<button type="submit" class="btn btn-danger">Logout</button>
+		</form>
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

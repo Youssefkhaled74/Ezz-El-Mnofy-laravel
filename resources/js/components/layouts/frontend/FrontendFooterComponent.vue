@@ -1,3 +1,4 @@
+
 <template>
     <LoadingComponent :props="loading" />
     <footer class="footer-part pt-12 mb-14 lg:mb-0">
@@ -7,16 +8,7 @@
                     <router-link :to="{ name: 'frontend.home' }">
                         <img class="mb-8 w-36" :src="setting.theme_footer_logo" alt="logo">
                     </router-link>
-                    <p class="text-xs mb-3 text-white">{{ $t('label.subscribe_short_text') }}</p>
-                    <form @submit.prevent="saveSubscription"
-                        class="flex items-center rounded-lg sm:max-w-xs w-full h-12 p-2 mb-8 bg-white">
-                        <input type="email" :placeholder="$t('label.your_email_address')"
-                            v-model="subscriptionProps.post.email" class="w-full h-full ltr:pl-2 rtl:pr-2">
-                        <button type="submit"
-                            class="capitalize text-xs font-medium rounded-md flex-shrink-0 p-2.5 text-white bg-primary">
-                            {{ $t('button.subscribe') }}
-                        </button>
-                    </form>
+                   
                     <h3 v-if="setting.social_media_facebook || setting.social_media_twitter || setting.social_media_instagram || setting.social_media_youtube"
                         class="text-xs capitalize mb-4 text-white">{{ $t('label.follow_us_on') }}</h3>
                     <nav v-if="setting.social_media_facebook || setting.social_media_twitter || setting.social_media_instagram || setting.social_media_youtube"
@@ -33,7 +25,6 @@
                 </div>
                 <div>
                     <div class="sm:w-fit sm:mx-auto">
-                        <h3 class="capitalize text-lg font-semibold mb-6 text-white">{{ $t('label.useful_links') }}</h3>
                         <nav v-if="pages.length > 0" class="flex flex-col items-start gap-3">
                             <router-link v-for="page in pages" class="capitalize text-white hover:underline"
                                 :to="{ name: 'frontend.page', params: { slug: page.slug } }">

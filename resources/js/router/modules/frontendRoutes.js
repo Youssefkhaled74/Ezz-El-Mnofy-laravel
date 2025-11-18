@@ -11,6 +11,7 @@ import AddressComponent from "../../components/frontend/account/address/AddressC
 import ChangePasswordComponent from "../../components/frontend/account/changePassword/ChangePasswordComponent";
 import CheckoutComponent from "../../components/frontend/checkout/CheckoutComponent";
 import SearchItemComponent from "../../components/frontend/search/SearchItemComponent";
+import DashboardComponent from "../../components/admin/dashboard/DashboardComponent";
 
 export default [
     {
@@ -20,6 +21,17 @@ export default [
         meta: {
             isFrontend: true,
             auth: false,
+        },
+    },
+	 {
+        path: "/admin/dashboard",
+        component: DashboardComponent,
+        name: "admin.dashboard",
+        meta: {
+            isFrontend: false,
+            auth: true,
+            permissionUrl: "dashboard",
+            breadcrumb: "dashboard",
         },
     },
     {

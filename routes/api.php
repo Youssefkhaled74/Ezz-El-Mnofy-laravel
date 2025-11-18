@@ -132,7 +132,7 @@ Route::prefix('auth')->middleware(['installed', 'apiKey', 'localization'])->name
         Route::post('/otp', [SignupController::class, 'otp']);
         Route::post('/verify', [SignupController::class, 'verify']);
         Route::post('/register', [SignupController::class, 'register']);
-        Route::post('/verifyToSignup', [SignupController::class , 'verifyToSignup']);
+        Route::post('/verifyToSignup', [SignupController::class, 'verifyToSignup']);
     });
 
     Route::prefix('guest-signup')->name('guest-signup.')->group(function () {
@@ -164,7 +164,7 @@ Route::prefix('profile')->name('profile.')->middleware(['installed', 'apiKey', '
     Route::post('/change-image', [ProfileController::class, 'changeImage']);
     Route::post('/update-email', [ProfileController::class, 'updateEmail']);
     Route::post('/verify-email-otp', [ProfileController::class, 'verifyEmailOtp']);
-    Route::post('/send-otp-to-update',[ProfileController::class,'sendOtpToUpdate']);
+    Route::post('/send-otp-to-update', [ProfileController::class, 'sendOtpToUpdate']);
     Route::post('/verify-otp-to-update', [ProfileController::class, 'verifyOtpToUpdate']);
 });
 
@@ -461,7 +461,7 @@ Route::prefix('admin')->name('admin.')->middleware(['installed', 'apiKey', 'auth
     });
 
     Route::prefix('item')->name('item.')->group(function () {
-        Route::get('/', [ItemController::class, 'index']);
+        Route::get('/', [ItemController::class, 'index'])->name('index');
         Route::get('/show/{item}', [ItemController::class, 'show']);
         Route::post('/', [ItemController::class, 'store']);
         Route::match(['post', 'put', 'patch'], '/{item}', [ItemController::class, 'update']);
@@ -637,7 +637,7 @@ Route::prefix('frontend')->name('frontend.')->middleware(['installed', 'apiKey',
         Route::get('/last-order-rating', [OrderRatingController::class, 'checkLastOrderRating']);
         Route::post('/rate-order', [OrderRatingController::class, 'storeOrderRating']);
     });
-    
+
     Route::middleware('auth:sanctum')->get('/user/referral-code', [ReferralController::class, 'getMyReferralCode']);
 
     Route::prefix('page')->name('page.')->group(function () {
@@ -661,9 +661,9 @@ Route::prefix('frontend')->name('frontend.')->middleware(['installed', 'apiKey',
         Route::delete('/{address}', [FrontendAddressController::class, 'destroy']);
     });
 
-    Route::prefix('brand/{brand}/branch')->name('brand.branch.')->group(function () {
-        Route::get('/', [FrontendBranchController::class, 'index']);
-        Route::get('/show/{branch}', [FrontendBranchController::class, 'show']);
+    Route::prefix('branch')->name('branch.')->group(function () {
+        Route::get('/', [FrontendBranchController::class, 'index'])->name('index');
+        Route::get('/show/{branch}', [FrontendBranchController::class, 'show'])->name('show');
     });
 
     Route::prefix('language')->name('language.')->group(function () {
@@ -687,7 +687,7 @@ Route::prefix('frontend')->name('frontend.')->middleware(['installed', 'apiKey',
     });
 
     Route::prefix('item')->name('item.')->group(function () {
-        Route::get('/', [FrontendItemController::class, 'index']);
+        Route::get('/', [FrontendItemController::class, 'index'])->name('index');
         Route::get('/featured-items', [FrontendItemController::class, 'featuredItems']);
         Route::get('/popular-items', [FrontendItemController::class, 'mostPopularItems']);
     });
@@ -759,3 +759,6 @@ Route::prefix('table')->name('table.')->middleware(['installed', 'apiKey', 'loca
         Route::post('/', [TableOrderController::class, 'store']);
     });
 });
+
+Route::get('areas/nearest', [\App\Http\Controllers\Frontend\AreaController::class, 'nearest']);
+

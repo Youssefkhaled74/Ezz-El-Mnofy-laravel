@@ -4,12 +4,23 @@
         <router-link class="w-32 flex-shrink-0" :to="{ name: 'frontend.home' }">
             <img class="w-full" :src="setting.theme_logo" alt="logo">
         </router-link>
-                    <button @click="goToDashboard"
-        class="paper-link transition w-full flex items-center gap-3.5 py-3 border-b last:border-none border-[#EFF0F6]">
-        <i class="lab lab-dashboard lab-font-size-17"></i>
-        <span class="text-sm leading-6 capitalize">{{ $t('button.dashboard') }}</span>
-    </button>
         <div class="flex items-center justify-end w-full gap-4">
+            <button
+                @click="redirectToDashboard"
+                class="flex items-center gap-2 text-left px-3 py-2 rounded-lg bg-blue-100 hover:bg-blue-200 transition"
+            >
+                <i class="fa-solid fa-flask text-blue-600"></i>
+                <span class="text-sm font-medium text-blue-800">Dashboard</span>
+            </button>
+
+            <button
+                @click="trackAllOrders"
+                class="flex items-center gap-2 text-left px-3 py-2 rounded-lg bg-green-100 hover:bg-green-200 transition"
+            >
+                <i class="fa-solid fa-list-check text-green-600"></i>
+                <span class="text-sm font-medium text-green-800">Track All Orders</span>
+            </button>
+
             <div
                 class="sub-header flex items-center gap-4 transition xh:justify-between xh:fixed xh:left-0 xh:w-full xh:p-4 xh:border-y xh:border-[#EFF0F6] xh:bg-white">
                 <div v-if="authBranch === 0" class="relative dropdown-group">
@@ -266,6 +277,12 @@ export default {
         }, 5000);
     },
     methods: {
+        redirectToDashboard() {
+            window.location.href = '/DashboardV2';
+        },
+        trackAllOrders() {
+            window.location.href = '/admin/track-all-orders';
+        },
         textShortener: function (text, number = 30) {
             return appService.textShortener(text, number);
         },
@@ -358,9 +375,6 @@ export default {
             this.orderNotificationStatus = false;
             this.orderNotification.orderType = null;
         },
-        goToDashboard: function () {
-        window.location.href = '/DashboardV2';
-    },
     }
 }
 </script>

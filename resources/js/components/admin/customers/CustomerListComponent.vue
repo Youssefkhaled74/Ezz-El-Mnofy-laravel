@@ -102,8 +102,6 @@
                                 <div class="flex justify-start items-center sm:items-start sm:justify-start gap-1.5">
                                     <SmIconViewComponent :link="'admin.customers.show'" :id="customer.id"
                                         v-if="permissionChecker('customers_show')" />
-                                    <SmIconSidebarModalEditComponent @click="edit(customer)"
-                                        v-if="permissionChecker('customers_edit')" />
                                     <SmIconDeleteComponent @click="destroy(customer.id)"
                                         v-if="customer.id !== 2 && permissionChecker('customers_delete')" />
 

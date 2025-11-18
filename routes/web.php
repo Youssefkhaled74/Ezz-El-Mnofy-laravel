@@ -6,15 +6,17 @@ use App\Http\Controllers\Admin\ItemController;
 use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\BranchController;
 use App\Http\Controllers\Admin\CouponController;
-use App\Http\Controllers\Frontend\RootController;
-
-use App\Http\Controllers\Frontend\BrandController;
-use App\Http\Controllers\Frontend\DashboardController;
-use App\Http\Controllers\Frontend\PaymentController;
-use App\Http\Controllers\Installer\InstallerController;
-use App\Http\Controllers\DashboardV2\UserProfileController;
 use App\Http\Controllers\Frontend\ChefController;
 
+use App\Http\Controllers\Frontend\RootController;
+use App\Http\Controllers\Frontend\BrandController;
+use App\Http\Controllers\Frontend\PaymentController;
+use App\Http\Controllers\Frontend\DashboardController;
+use App\Http\Controllers\Installer\InstallerController;
+use App\Http\Controllers\Admin\TrackAllOrdersController;
+use App\Http\Controllers\DashboardV2\UserProfileController;
+
+use App\Http\Controllers\Auth\LoginController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,8 +44,10 @@ Route::prefix('install')->name('installer.')->middleware(['web'])->group(functio
     Route::get('/final-store', [InstallerController::class, 'finalStore'])->name('finalStore');
 });
 
+Route::get('/', function () { return redirect('/login'); })->middleware(['installed'])->name('home');
+//Route::get('/', [RootController::class, 'index'])->middleware(['installed'])->name('home');
+//Route::get('/', [LoginController::class, 'login'])->name('home');
 
-Route::get('/', [RootController::class, 'index'])->middleware(['installed'])->name('home');
 Route::prefix('payment')->name('payment.')->middleware(['installed'])->group(function () {
     Route::get('/{order}/pay', [PaymentController::class, 'index'])->name('index');
     Route::post('/{order}/pay', [PaymentController::class, 'payment'])->name('store');
@@ -56,6 +60,7 @@ Route::prefix('payment')->name('payment.')->middleware(['installed'])->group(fun
 // Route::get('dashboardv2/users', [UserProfileController::class, 'index'])
 //     ->name('admin.users.index');
 Route::get('dashboardv2/order-ratings', [UserProfileController::class, 'orderRatings'])->name('dashboard.order_ratings');
+Route::get('/dashboard/order-ratings/export', [UserProfileController::class, 'exportRatings'])->name('dashboard.order_ratings.export');
 
 Route::get('/admin/orders/preparation-time', [UserProfileController::class, 'managePreparationTime'])->name('dashboard.orders.preparation_time');
 Route::post('/admin/orders/preparation-time/{order}', [UserProfileController::class, 'updatePreparationTime'])->name('dashboard.orders.update_preparation_time');
@@ -81,13 +86,21 @@ Route::prefix('chef-management')->name('chef_management.')->group(function () {
 //userMoreData
 Route::get('/DashboardV2/userMoreData', [UserProfileController::class, 'userMoreData'])->name('dashboard.userMoreData');
 
+Route::delete('/offers/{offer}/delete', [OfferController::class, 'deleteNew'])->name('offers.delete');
 Route::get('/offers/create', [OfferController::class, 'NewCreate'])->name('offers.create');
 Route::post('/offers', [OfferController::class, 'NewStore'])->name('offers.store.brand');
+Route::get('/offers', [OfferController::class, 'indexNew'])->name('offers.index');
 
 
-Route::get('create-item', function() {
-    echo 'Create Item';
-});
+Route::get('/create-item', [ItemController::class, 'createNew'])->name('items.create');
+Route::post('/items', [ItemController::class, 'storeNew'])->name('items.store');
+Route::get('/edit/{id}', [ItemController::class, 'edit'])->name('items.edit');
+Route::put('/update/{id}', [ItemController::class, 'update'])->name('items.update');
+Route::get('/branch-index', [ItemController::class, 'branchIndex'])->name('Items.branch-index');
+Route::get('/edit-brand/{id}', [ItemController::class, 'editBrand'])->name('items.edit-brand');
+Route::put('/update-brand/{id}', [ItemController::class, 'updateBrand'])->name('itemsupdate-brand');
+Route::get('/show/{id}', [ItemController::class, 'show'])->name('items.show');
+
 
 
 Route::prefix('chef')->name('chef.')->group(function () {
@@ -126,5 +139,7 @@ Route::get('/items/{item}/edit-brand', [ItemController::class, 'editBrand'])->na
 Route::put('/items/{item}/update-brand', [ItemController::class, 'updateBrand'])->name('items.update-brand');
 Route::get('/items/{item}/edit-branches', [ItemController::class, 'editBranches'])->name('items.edit-branches');
 Route::put('/items/{item}/update-branches', [ItemController::class, 'updateBranches'])->name('items.update-branches');
-
+Route::prefix('admin')->group(function () {
+    Route::get('/track-all-orders', [TrackAllOrdersController::class, 'index'])->name('admin.track-all-orders');
+});
 Route::get('/{any}', [RootController::class, 'index'])->middleware(['installed'])->where(['any' => '.*']);

@@ -23,11 +23,11 @@
                         <i class="bi bi-geo-alt me-1"></i>Branches
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a class="nav-link {{ Route::is('brands') ? 'active' : '' }}" href="{{ route('brands') }}">
                         <i class="bi bi-bookmark-star me-1"></i>Brands
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a class="nav-link {{ Route::is('offers.create') ? 'active' : '' }}" href="{{ route('offers.create') }}">
                         <i class="bi bi-tag me-1"></i>Create Offer
