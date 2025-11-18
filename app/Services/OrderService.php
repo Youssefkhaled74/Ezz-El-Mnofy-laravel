@@ -225,6 +225,7 @@ class OrderService
      */
     public function myOrderStore(OrderRequest $request): object
     {
+
         try {
             DB::transaction(function () use ($request) {
                 $this->order = Order::create(
@@ -242,7 +243,6 @@ class OrderService
                 $requestItems = json_decode($request->items);
                 $items        = Item::get()->pluck('tax_id', 'id');
                 $taxes        = AppLibrary::pluck(Tax::get(), 'obj', 'id');
-
                 if (!blank($requestItems)) {
                     foreach ($requestItems as $item) {
                         $taxId          = isset($items[$item->item_id]) ? $items[$item->item_id] : 0;
@@ -305,8 +305,8 @@ class OrderService
                     ]);
                 }
 
-                SendOrderMail::dispatch(['order_id' => $this->order->id, 'status' => $request->status]);
-                SendOrderSms::dispatch(['order_id' => $this->order->id, 'status' => $request->status]);
+                //SendOrderMail::dispatch(['order_id' => $this->order->id, 'status' => $request->status]);
+                //SendOrderSms::dispatch(['order_id' => $this->order->id, 'status' => $request->status]);
                 SendOrderPush::dispatch(['order_id' => $this->order->id, 'status' => $request->status]);
             });
             return $this->order;
@@ -592,45 +592,18 @@ class OrderService
                         $order->reason = $request->reason;
                     }
 
-                    if ($request->status == OrderStatus::REJECTED || $request->status == OrderStatus::CANCELED) {
-                        if ($order->transaction) {
-                            app(PaymentService::class)->cashBack(
-                                $order,
-                                'credit',
-                                rand(111111111111111, 99999999999999)
-                            );
-                        }
-                    }
-                    SendOrderMail::dispatch(['order_id' => $order->id, 'status' => $request->status]);
-                    SendOrderSms::dispatch(['order_id' => $order->id, 'status' => $request->status]);
-                    SendOrderPush::dispatch(['order_id' => $order->id, 'status' => $request->status]);
+
                     $order->status = $request->status;
                     $order->save();
                 }
             } else {
-                if ($request->status == OrderStatus::REJECTED || $request->status == OrderStatus::CANCELED) {
-                    $request->validate([
-                        'reason' => 'required|max:700',
-                    ]);
 
-                    if ($request->reason) {
-                        $order->reason = $request->reason;
-                    }
-
-                    if ($order->transaction) {
-                        app(PaymentService::class)->cashBack(
-                            $order,
-                            'credit',
-                            rand(111111111111111, 99999999999999)
-                        );
-                    }
-                }
-                SendOrderMail::dispatch(['order_id' => $order->id, 'status' => $request->status]);
-                SendOrderSms::dispatch(['order_id' => $order->id, 'status' => $request->status]);
-                SendOrderPush::dispatch(['order_id' => $order->id, 'status' => $request->status]);
                 $order->status = $request->status;
                 $order->save();
             }
+            // SendOrderMail::dispatch(['order_id' => $order->id, 'status' => $request->status]);
+            // SendOrderSms::dispatch(['order_id' => $order->id, 'status' => $request->status]);
+            SendOrderPush::dispatch(['order_id' => $order->id, 'status' => $request->status]);
             return $order;
         } catch (Exception $exception) {
             Log::info($exception->getMessage());

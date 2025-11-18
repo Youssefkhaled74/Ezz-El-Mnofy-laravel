@@ -27,12 +27,12 @@ class ProfileRequest extends FormRequest
         return [
             'first_name' => ['required', 'string', 'max:190'],
             'last_name' => ['required', 'string', 'max:190'],
-            'email' => [
-                'nullable',
-                'email',
-                'max:190',
-                Rule::unique('users', 'email')->ignore(auth()->user()->id),
-            ],
+           // 'email' => [
+            //    'nullable',
+            //    'email',
+             //   'max:190',
+             //   Rule::unique('users', 'email')->ignore(auth()->user()->id),
+            //],
             'phone' => [
                 'nullable',
                 'string',

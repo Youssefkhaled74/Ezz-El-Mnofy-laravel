@@ -159,6 +159,7 @@ class SignupController extends Controller
                 $user->whatsapp_country_code = $request->post('whatsapp_country_code');
                 $user->discount_id_photo = $request->post('discount_id_photo');
                 $user->save();
+				
             } else {
                 $user = User::create([
                     'name'              => $name,
@@ -174,6 +175,14 @@ class SignupController extends Controller
                     'referral_code' => $request->post('referral_code'),
                     'birthday' => $request->post('birthday'),
                     'whatsapp_country_code' => $request->post('whatsapp_country_code'),
+                ]);
+				//$otpCode = rand(1000, 9999);
+				$otpCode = 1111;
+                DB::table('otps')->insert([
+                    'phone' => $request->post('phone'),
+					'code' => $request->post('country_code'),
+                    'token' => $otpCode,
+                    'created_at' => now(),
                 ]);
                 if ($request->hasFile('discount_id_photo')) {
                     $user->addMediaFromRequest('discount_id_photo')->toMediaCollection('profile');

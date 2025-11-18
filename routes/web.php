@@ -85,9 +85,15 @@ Route::get('/offers/create', [OfferController::class, 'NewCreate'])->name('offer
 Route::post('/offers', [OfferController::class, 'NewStore'])->name('offers.store.brand');
 
 
-Route::get('create-item', function() {
-    echo 'Create Item';
-});
+Route::get('/create-item', [ItemController::class, 'createNew'])->name('items.create');
+Route::post('/items', [ItemController::class, 'storeNew'])->name('items.store');
+Route::get('/edit/{id}', [ItemController::class, 'edit'])->name('items.edit');
+Route::put('/update/{id}', [ItemController::class, 'update'])->name('items.update');
+Route::get('/branch-index', [ItemController::class, 'branchIndex'])->name('Items.branch-index');
+Route::get('/edit-brand/{id}', [ItemController::class, 'editBrand'])->name('items.edit-brand');
+Route::put('/update-brand/{id}', [ItemController::class, 'updateBrand'])->name('itemsupdate-brand');
+Route::get('/show/{id}', [ItemController::class, 'show'])->name('items.show');
+
 
 
 Route::prefix('chef')->name('chef.')->group(function () {

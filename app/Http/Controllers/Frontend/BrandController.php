@@ -16,7 +16,7 @@ class BrandController extends Controller
             return [
                 'id'   => $brand->id,
                 'name' => $brand->name,
-                'logo' => env('APP_URL') . Storage::url('brands/' . $brand->logo),
+                'logo' => env('APP_URL') . Storage::url('brands/'. $brand->logo),
             ];
         });
 
@@ -27,7 +27,7 @@ class BrandController extends Controller
         return response()->json([
             'id'   => $brand->id,
             'name' => $brand->name,
-            'logo' => env('APP_URL') . Storage::url('brands/' . $brand->logo),
+            'logo' => env('APP_URL') . Storage::url('brands/'. $brand->logo),
         ]);
     }
 
@@ -85,8 +85,8 @@ class BrandController extends Controller
 
     public function destroy(Brand $brand)
     {
-        if ($brand->branches()->exists() || $brand->categories()->exists() || $brand->items()->exists()) {
-            return redirect()->route('brands')->with('error', 'Cannot delete brand with associated branches, categories, or items.');
+        if ($brand->branches()->exists() || $brand->items()->exists()) {
+            return redirect()->route('brands')->with('error', 'Cannot delete brand with associated branches, or items.');
         }
 
         $brand->clearMediaCollection('brands');

@@ -6,6 +6,7 @@ use App\Enums\Status;
 use App\Libraries\AppLibrary;
 use Carbon\Carbon;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\App;
 
 class NormalItemResource extends JsonResource
 {
@@ -17,25 +18,41 @@ class NormalItemResource extends JsonResource
      */
     public function toArray($request)
     {
-        $price = $this->price;
-        $user = $request->user(); // Get the authenticated user
+        $branchId = $request->get('branch_id');
+        $branch = $branchId ? $this->branches->firstWhere('id', $branchId) : null;
+        $price = $branch && $branch->pivot->price !== null ? $branch->pivot->price : $this->price;
+        $user = $request->user();
+        $locale = $request->get('lang', App::getLocale());
+        $name = $this->name[$locale] ?? $this->name['en'] ?? '';
+        if ($locale === 'fr') {
+            $name = $this->name['en'] ?? '';
+        }
+
+        // Decode JSON description if it’s a string, then apply localization
+        $description = is_string($this->description) ? json_decode($this->description, true) : $this->description;
+        $description = is_array($description)
+            ? ($description[$locale] ?? $description['en'] ?? '')
+            : ($description ?? '');
+        if ($locale === 'fr') {
+            $description = is_array($description) ? ($description['en'] ?? '') : ($description ?? '');
+        }
 
         return [
             "id"             => $this->id,
-            "name"           => $this->name,
+            "name"           => $name,
             "slug"           => $this->slug,
-            "flat_price"     => AppLibrary::flatAmountFormat($this->price),
-            "convert_price"  => AppLibrary::convertAmountFormat($this->price),
-            "currency_price" => AppLibrary::currencyAmountFormat($this->price),
-            "price"          => $this->price,
+            "flat_price"     => AppLibrary::flatAmountFormat($price),
+            "convert_price"  => AppLibrary::convertAmountFormat($price),
+            "currency_price" => AppLibrary::currencyAmountFormat($price),
+            "price"          => $price,
             "item_type"      => $this->item_type,
             "status"         => $this->status,
-            "description"    => $this->description === null ? '' : $this->description,
+            "description"    => $description,
             "caution"        => $this->caution === null ? '' : $this->caution,
             "thumb"          => $this->thumb,
             "cover"          => $this->cover,
             "preview"        => $this->preview,
-            "is_favorite"    => $user ? $user->favorites->contains($this->id) : false, // Add this line
+            "is_favorite"    => $user ? $user->favorites->contains($this->id) : false,
             "variations"     => $this->variations->groupBy('item_attribute_id'),
             "itemAttributes" => ItemAttributeResource::collection($this->itemAttributeList($this->variations)),
             "extras"         => ItemExtraResource::collection($this->extras),
@@ -57,6 +74,17 @@ class NormalItemResource extends JsonResource
                     }
                 })
             ),
+            "branches" => $this->branches->map(function ($branch) {
+                return [
+                    "id"       => $branch->id,
+                    "name"     => $branch->name,
+                    "location" => $branch->location ?? '',
+                    "price"    => $branch->pivot->price ?? null,
+                ];
+            }),
+            "brand_id"      => $this->brand_id,
+            "brand_name"    => optional($this->brand)->name,
+            "brand_logo"    => optional($this->brand)->logo === null ? '' : env('APP_URL') . '/public/' . optional($this->brand)->logo,
         ];
     }
 

@@ -43,10 +43,10 @@
             background-color: var(--primary-red);
             border-color: var(--primary-red);
             color: #ffffff;
-            padding: 0.4rem 1.2rem; /* Reduced padding */
+            padding: 0.4rem 1.2rem;
             font-weight: 500;
             transition: all 0.3s ease;
-            font-size: 0.9rem; /* Smaller font size */
+            font-size: 0.9rem;
         }
 
         .btn-red:hover,
@@ -81,25 +81,25 @@
 
         .card-header {
             border-bottom: none;
-            padding: 1rem 1.25rem; /* Reduced padding */
+            padding: 1rem 1.25rem;
         }
 
         .card-body {
-            padding: 1.5rem; /* Reduced padding */
+            padding: 1.5rem;
         }
 
         .form-label {
             color: var(--dark-gray);
             font-weight: 600;
-            font-size: 0.9rem; /* Smaller font size */
+            font-size: 0.9rem;
         }
 
         .form-control {
             border-radius: 0.375rem;
             border-color: #ced4da;
-            padding: 0.4rem 0.6rem; /* Reduced padding */
+            padding: 0.4rem 0.6rem;
             transition: all 0.3s ease;
-            font-size: 0.9rem; /* Smaller font size */
+            font-size: 0.9rem;
         }
 
         .form-control:focus {
@@ -117,14 +117,14 @@
             background-color: var(--light-gray);
             color: var(--dark-gray);
             font-weight: 600;
-            padding: 0.5rem; /* Reduced padding */
-            font-size: 0.85rem; /* Smaller font size */
+            padding: 0.5rem;
+            font-size: 0.85rem;
         }
 
         .table td {
             vertical-align: middle;
-            padding: 0.5rem; /* Reduced padding */
-            font-size: 0.85rem; /* Smaller font size */
+            padding: 0.5rem;
+            font-size: 0.85rem;
         }
 
         .nav-link.active {
@@ -168,7 +168,7 @@
 
         .photo-preview {
             cursor: pointer;
-            max-width: 40px; /* Reduced size */
+            max-width: 40px;
             max-height: 40px;
             object-fit: cover;
             border-radius: 4px;
@@ -182,26 +182,26 @@
 
         /* Rating Statistics Section */
         .rating-card .card-body {
-            padding: 1rem; /* Reduced padding */
+            padding: 1rem;
         }
 
         .rating-card .card-title {
-            font-size: 0.9rem; /* Smaller font size */
+            font-size: 0.9rem;
             margin-bottom: 0.5rem;
         }
 
         .rating-value {
-            font-size: 1.1rem; /* Slightly smaller font size */
+            font-size: 1.1rem;
             font-weight: bold;
             margin-bottom: 0.25rem;
         }
 
         .rating-stars {
-            font-size: 0.8rem; /* Smaller stars */
+            font-size: 0.8rem;
         }
 
         .rating-progress {
-            height: 0.5rem; /* Thinner progress bar */
+            height: 0.5rem;
         }
 
         .rating-progress .progress-bar {
@@ -242,7 +242,7 @@
                 border-bottom: 1px solid #eee;
                 position: relative;
                 padding-left: 40%;
-                font-size: 0.8rem; /* Smaller font size for mobile */
+                font-size: 0.8rem;
             }
 
             .table tbody td::before {
@@ -253,7 +253,7 @@
                 font-weight: 600;
                 color: var(--primary-red);
                 text-transform: uppercase;
-                font-size: 0.75rem; /* Smaller font size for mobile */
+                font-size: 0.75rem;
             }
 
             .table tbody td:last-child {
@@ -276,18 +276,19 @@
 
         /* Adjust column widths */
         .th-comment { 
-            width: 200px !important; /* Reduced width */
+            width: 200px !important;
             white-space: normal !important;
         }
 
-        .th-user { width: 120px !important; } /* Reduced width */
-        .th-order-id { width: 60px !important; } /* Reduced width */
-        .th-delivery-time { width: 90px !important; } /* Reduced width */
-        .th-food-quality { width: 90px !important; } /* Reduced width */
-        .th-experience { width: 100px !important; } /* Reduced width */
-        .th-packing { width: 80px !important; } /* Reduced width */
-        .th-service { width: 100px !important; } /* Reduced width */
-        .th-photo { width: 50px !important; } /* Reduced width */
+        .th-user { width: 120px !important; }
+        .th-order-id { width: 60px !important; }
+        .th-order-type { width: 80px !important; } /* Added for Order Type */
+        .th-delivery-time { width: 90px !important; }
+        .th-food-quality { width: 90px !important; }
+        .th-experience { width: 100px !important; }
+        .th-packing { width: 80px !important; }
+        .th-service { width: 100px !important; }
+        .th-photo { width: 50px !important; }
     </style>
 </head>
 
@@ -298,8 +299,11 @@
     <!-- Main Content -->
     <div class="container py-3">
         <div class="card shadow-sm border-0">
-            <div class="card-header bg-red text-white">
+            <div class="card-header bg-red text-white d-flex justify-content-between align-items-center">
                 <h2 class="mb-0 fs-5"><i class="bi bi-star-fill me-2"></i>Order Ratings</h2>
+                <a href="{{ route('dashboard.order_ratings', array_merge(request()->query(), ['export' => 'true'])) }}" class="btn btn-light btn-sm">
+                    <i class="bi bi-file-earmark-excel me-1"></i>Export to Excel
+                </a>
             </div>
             <div class="card-body">
                 <!-- Rating Statistics -->
@@ -542,6 +546,7 @@
                             <tr>
                                 <th class="th-user">User</th>
                                 <th class="th-order-id">Order ID</th>
+                                <th class="th-order-type">Order Type</th>
                                 <th class="th-delivery-time">Delivery Time</th>
                                 <th class="th-food-quality">Food Quality</th>
                                 <th class="th-experience">Overall Experience</th>
@@ -560,6 +565,9 @@
                                             class="order-id-link">
                                             {{ $rating->order_id }}
                                         </a>
+                                    </td>
+                                    <td data-label="Order Type">
+                                        {{ $rating->order->order_type ?? 'N/A' }}
                                     </td>
                                     <td data-label="Delivery Time">
                                         <span class="rating-stars">
@@ -611,7 +619,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="9" class="text-center text-muted">No order ratings found.</td>
+                                    <td colspan="10" class="text-center text-muted">No order ratings found.</td>
                                 </tr>
                             @endforelse
                         </tbody>

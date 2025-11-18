@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\MessageRequest;
 use App\Http\Requests\PaginateRequest;
+use App\Events\SendOrderPush;
 
 class MessageService
 {
@@ -72,11 +73,20 @@ class MessageService
                         Arr::except($request->validated(), ['branch_id']) + ['message_id' => $this->message->id]
                     );
                 }
+                
 
                 if ($request->image) {
                     $messageHistory->addMediaFromRequest('image')->toMediaCollection('message');
                 }
             });
+
+            // Send notification to the user that a message was sent
+            if (isset($this->message) && $this->message->user_id) {
+                SendOrderPush::dispatch([
+                    'user_id' => $this->message->user_id,
+                    'message' => 'A new message has been sent to you.'
+                ]);
+            }
 
             return $this->message;
         } catch (Exception $exception) {

@@ -33,14 +33,14 @@ class Item extends Model implements HasMedia
     protected $dates = ['deleted_at'];
     protected $casts = [
         'id'               => 'integer',
-        'name'             => 'string',
+        'name'             => 'array', // Changed from 'string' to 'array' to handle JSON
         'item_category_id' => 'integer',
         'slug'             => 'string',
         'tax_id'           => 'integer',
         'item_type'        => 'integer',
-        'price'            => 'decimal:6',
+        'price'            => 'decimal:2',
         'is_featured'      => 'integer',
-        'description'      => 'string',
+        'description' => 'array',
         'caution'          => 'string',
         'status'           => 'integer',
         'order'            => 'integer',
@@ -52,8 +52,7 @@ class Item extends Model implements HasMedia
     }
     public function branches()
     {
-        return $this->belongsToMany(Branch::class, 'branch_item');
-    }
+return $this->belongsToMany(Branch::class, 'branch_item')->withPivot('price');    }
 
     public function getThumbAttribute(): string
     {
@@ -123,4 +122,18 @@ class Item extends Model implements HasMedia
     {
         return $this->belongsToMany(Offer::class, 'offer_items');
     }
+	public function getPriceForBranch($branchId)
+    {
+        $branch = $this->branches()->where('branch_id', $branchId)->first();
+        return $branch && $branch->pivot->price !== null ? $branch->pivot->price : $this->price;
+    }
+	public function getNameEnAttribute(): string
+{
+    return $this->name['en'] ?? '';
+}
+
+public function getNameArAttribute(): string
+{
+    return $this->name['ar'] ?? '';
+}
 }

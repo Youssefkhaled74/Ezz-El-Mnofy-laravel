@@ -39,10 +39,10 @@ class LoginController extends Controller
     /**
      * @throws \Exception
      */
-    public function login(Request $request): JsonResponse
+ 	public function login(Request $request): JsonResponse
     {
         $validator = Validator::make($request->all(), [
-            'email'    => ['required', 'string', 'email', 'max:255'],
+            'email'    => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:6'],
         ]);
 
@@ -65,14 +65,20 @@ class LoginController extends Controller
             $branchId = Settings::group('site')->get('site_default_branch');
         }
         $this->defaultAccessService->storeOrUpdate(['branch_id' => $branchId]);
-        $user        = User::where('email', $request['email'])->first();
-        if($user->is_phone_verified == false) {
-            return new JsonResponse([
-                'IsPhoneVerified' => false,
-                'phone' => $user->phone,
-                'code' => $user->country_code,
-            ] , 200);
+        $user = User::where('email', $request['email'])->first();
+
+        // Check if the user's username is 'admin'
+        if ($user->username !== 'admin') {
+            // Apply phone verification check only for non-admin users
+            if ($user->is_phone_verified == false) {
+                return new JsonResponse([
+                    'IsPhoneVerified' => false,
+                    'phone' => $user->phone,
+                    'code' => $user->country_code,
+                ], 200);
+            }
         }
+
         $this->token = $user->createToken('auth_token')->plainTextToken;
 
         if (!isset($user->roles[0])) {
@@ -81,7 +87,7 @@ class LoginController extends Controller
             ], 400);
         }
 
-        $permission        = PermissionResource::collection($this->permissionService->permission($user->roles[0]));
+        $permission = PermissionResource::collection($this->permissionService->permission($user->roles[0]));
         $defaultPermission = AppLibrary::defaultPermission($permission);
 
         return new JsonResponse([

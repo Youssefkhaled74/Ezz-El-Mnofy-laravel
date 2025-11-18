@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Exception;
+use Illuminate\Support\Facades\Validator;
 use App\Models\Item;
 use App\Models\Brand;
 use App\Models\Offer;
@@ -27,11 +28,11 @@ class OfferController extends AdminController
     {
         parent::__construct();
         $this->offerService = $offer;
-        $this->middleware(['permission:offers'])->only('index', 'export', 'changeImage');
-        $this->middleware(['permission:offers_create'])->only('store');
-        $this->middleware(['permission:offers_edit'])->only('update');
-        $this->middleware(['permission:offers_delete'])->only('destroy');
-        $this->middleware(['permission:offers_show'])->only('show');
+        // $this->middleware(['permission:offers'])->only('index', 'export', 'changeImage');
+        // $this->middleware(['permission:offers_create'])->only('store');
+        // $this->middleware(['permission:offers_edit'])->only('update');
+        // $this->middleware(['permission:offers_delete'])->only('destroy');
+        // $this->middleware(['permission:offers_show'])->only('show');
     }
 
     public function index(
@@ -111,27 +112,81 @@ class OfferController extends AdminController
     }
     public function NewStore(NewOfferRequest $request)
     {
-        $request->validate([
-            'name'       => 'required|string|max:255',
-            'slug'       => 'required|string|max:255|unique:offers,slug',
-            'amount'     => 'required|numeric',
-            'status'     => 'required',
-            'start_date' => 'required|date',
-            'end_date'   => 'required|date|after:start_date',
-            'brand_id'   => 'required|exists:brands,id', // Add validation for brand
-            'items'      => 'array',
-        ]);
-        
+        try {
+            // Set default brand_id if not provided
+            $requestData = $request->all();
+            if (empty($requestData['brand_id'])) {
+                $requestData['brand_id'] = 1;
+            }
 
-        $offer = Offer::create($request->only(['name', 'slug', 'amount', 'status', 'start_date', 'end_date', 'brand_id']));
-        
-        if ($request->has('items')) {
-            $offer->items()->sync($request->items);
-        }
+            $validated = Validator::make($requestData, [
+                'name'       => 'required|string|max:255',
+                'slug'       => 'required|string|max:255|unique:offers,slug',
+                'amount'     => 'required|numeric|min:0|max:100',
+                'status'     => 'required|in:5,10',
+                'start_date' => 'required|date',
+                'end_date'   => ['required', 'date', 'after_or_equal:start_date'],
+                'brand_id'   => 'required|exists:brands,id',
+                'items'      => 'nullable|array',
+                'items.*'    => 'exists:items,id',
+                'image'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            ])->validate();
 
-        if ($request->hasFile('image')) {
-            $offer->addMediaFromRequest('image')->toMediaCollection('offer');
+            $offer = Offer::create([
+                'name' => $requestData['name'],
+                'slug' => $requestData['slug'],
+                'amount' => $requestData['amount'],
+                'status' => $requestData['status'],
+                'start_date' => $requestData['start_date'],
+                'end_date' => $requestData['end_date'],
+                'brand_id' => $requestData['brand_id'],
+            ]);
+
+            if (!empty($requestData['items'])) {
+                $offer->items()->sync($requestData['items']);
+            }
+
+            if ($request->hasFile('image')) {
+                $offer->addMediaFromRequest('image')->toMediaCollection('offer');
+            }
+
+            return redirect()->route('offers.index')->with('success', 'Offer created successfully.');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return redirect()->back()->withErrors($e->validator)->withInput();
+        } catch (Exception $e) {
+            return redirect()->back()->with('error', 'Failed to create offer: ' . $e->getMessage())->withInput();
         }
-        return redirect()->route('admin.offer.index')->with('success', 'Offer created successfully.');
+    }
+
+    public function indexNew(PaginateRequest $request)
+    {
+        try {
+            $search = $request->query('search');
+
+            $offers = Offer::with(['brand', 'items'])
+                ->when($search, function ($query, $search) {
+                    return $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('slug', 'like', '%' . $search . '%')
+                        ->orWhere('amount', 'like', '%' . $search . '%')
+                        ->orWhereHas('brand', function ($q) use ($search) {
+                            $q->where('name', 'like', '%' . $search . '%');
+                        });
+                })
+                ->orderBy('name', 'asc')
+                ->paginate(10);
+
+            return view('offers.index', compact('offers'));
+        } catch (Exception $exception) {
+            return response(['status' => false, 'message' => $exception->getMessage()], 422);
+        }
+    }
+    public function deleteNew(Offer $offer)
+    {
+        try {
+            $this->offerService->destroy($offer);
+            return response()->json(['status' => true, 'message' => 'Offer deleted successfully.'], 200);
+        } catch (Exception $exception) {
+            return response()->json(['status' => false, 'message' => $exception->getMessage()], 422);
+        }
     }
 }

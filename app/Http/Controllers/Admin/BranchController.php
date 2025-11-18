@@ -90,11 +90,25 @@ class BranchController extends AdminController
 
 
 
-    public function NewIndex()
-    {
-        $branches = Branch::with('brand')->orderBy('name', 'asc')->paginate(10);
-        return view('branches.index', compact('branches'));
-    }
+public function NewIndex(Request $request)
+{
+    $search = $request->query('search');
+
+    $branches = Branch::with('brand')
+        ->when($search, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%')
+                        ->orWhere('phone', 'like', '%' . $search . '%')
+                        ->orWhere('city', 'like', '%' . $search . '%')
+                        ->orWhereHas('brand', function ($q) use ($search) {
+                            $q->where('name', 'like', '%' . $search . '%');
+                        });
+        })
+        ->orderBy('name', 'asc')
+        ->paginate(10);
+
+    return view('branches.index', compact('branches'));
+}
 
     public function editBrand(Branch $branch)
     {

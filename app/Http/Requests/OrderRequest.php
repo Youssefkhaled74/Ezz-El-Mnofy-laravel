@@ -28,6 +28,7 @@ class OrderRequest extends FormRequest
      */
     public function rules(): array
     {
+		
         return [
             'branch_id'        => ['required', 'numeric'],
             'subtotal'         => ['required', 'numeric'],
@@ -43,13 +44,15 @@ class OrderRequest extends FormRequest
                 'required',
                 'numeric'
             ] : ['nullable'],
+			
             'delivery_time'    => request('order_type') === OrderType::DELIVERY ? [
                 'nullable',
                 'string'
             ] : ['nullable'],
             'coupon_id'        => ['nullable', 'numeric'],
             'source'           => ['required', 'numeric'],
-            'items'            => ['required', 'json', new ValidJsonOrder]
+            'items'            => ['required', 'json', new ValidJsonOrder],
+			//dd('gggg')
         ];
     }
 
