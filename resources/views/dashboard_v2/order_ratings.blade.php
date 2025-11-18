@@ -44,9 +44,17 @@
             border-color: var(--primary-red);
             color: #ffffff;
             padding: 0.4rem 1.2rem;
+<<<<<<< HEAD
             font-weight: 500;
             transition: all 0.3s ease;
             font-size: 0.9rem;
+=======
+            /* Reduced padding */
+            font-weight: 500;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            /* Smaller font size */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
         }
 
         .btn-red:hover,
@@ -82,24 +90,43 @@
         .card-header {
             border-bottom: none;
             padding: 1rem 1.25rem;
+<<<<<<< HEAD
+=======
+            /* Reduced padding */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
         }
 
         .card-body {
             padding: 1.5rem;
+<<<<<<< HEAD
+=======
+            /* Reduced padding */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
         }
 
         .form-label {
             color: var(--dark-gray);
             font-weight: 600;
             font-size: 0.9rem;
+<<<<<<< HEAD
+=======
+            /* Smaller font size */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
         }
 
         .form-control {
             border-radius: 0.375rem;
             border-color: #ced4da;
             padding: 0.4rem 0.6rem;
+<<<<<<< HEAD
             transition: all 0.3s ease;
             font-size: 0.9rem;
+=======
+            /* Reduced padding */
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            /* Smaller font size */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
         }
 
         .form-control:focus {
@@ -118,13 +145,25 @@
             color: var(--dark-gray);
             font-weight: 600;
             padding: 0.5rem;
+<<<<<<< HEAD
             font-size: 0.85rem;
+=======
+            /* Reduced padding */
+            font-size: 0.85rem;
+            /* Smaller font size */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
         }
 
         .table td {
             vertical-align: middle;
             padding: 0.5rem;
+<<<<<<< HEAD
             font-size: 0.85rem;
+=======
+            /* Reduced padding */
+            font-size: 0.85rem;
+            /* Smaller font size */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
         }
 
         .nav-link.active {
@@ -169,6 +208,10 @@
         .photo-preview {
             cursor: pointer;
             max-width: 40px;
+<<<<<<< HEAD
+=======
+            /* Reduced size */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
             max-height: 40px;
             object-fit: cover;
             border-radius: 4px;
@@ -183,34 +226,62 @@
         /* Rating Statistics Section */
         .rating-card .card-body {
             padding: 1rem;
+<<<<<<< HEAD
+=======
+            /* Reduced padding */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
         }
 
         .rating-card .card-title {
             font-size: 0.9rem;
+<<<<<<< HEAD
+=======
+            /* Smaller font size */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
             margin-bottom: 0.5rem;
         }
 
         .rating-value {
             font-size: 1.1rem;
+<<<<<<< HEAD
+=======
+            /* Slightly smaller font size */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
             font-weight: bold;
             margin-bottom: 0.25rem;
         }
 
         .rating-stars {
             font-size: 0.8rem;
+<<<<<<< HEAD
+=======
+            /* Smaller stars */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
         }
 
         .rating-progress {
             height: 0.5rem;
+<<<<<<< HEAD
+=======
+            /* Thinner progress bar */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
         }
 
         .rating-progress .progress-bar {
             background-color: #28a745;
         }
 
-        .rating-green { color: #28a745; }
-        .rating-yellow { color: #ffc107; }
-        .rating-red { color: var(--primary-red); }
+        .rating-green {
+            color: #28a745;
+        }
+
+        .rating-yellow {
+            color: #ffc107;
+        }
+
+        .rating-red {
+            color: var(--primary-red);
+        }
 
         /* Responsive table for mobile */
         @media screen and (max-width: 768px) {
@@ -243,6 +314,10 @@
                 position: relative;
                 padding-left: 40%;
                 font-size: 0.8rem;
+<<<<<<< HEAD
+=======
+                /* Smaller font size for mobile */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
             }
 
             .table tbody td::before {
@@ -254,6 +329,10 @@
                 color: var(--primary-red);
                 text-transform: uppercase;
                 font-size: 0.75rem;
+<<<<<<< HEAD
+=======
+                /* Smaller font size for mobile */
+>>>>>>> 70c2f57d9f8ef0b387136316ce36beaf5596c8bf
             }
 
             .table tbody td:last-child {
@@ -289,6 +368,52 @@
         .th-packing { width: 80px !important; }
         .th-service { width: 100px !important; }
         .th-photo { width: 50px !important; }
+        .th-comment {
+            width: 200px !important;
+            /* Reduced width */
+            white-space: normal !important;
+        }
+
+        .th-user {
+            width: 120px !important;
+        }
+
+        /* Reduced width */
+        .th-order-id {
+            width: 60px !important;
+        }
+
+        /* Reduced width */
+        .th-delivery-time {
+            width: 90px !important;
+        }
+
+        /* Reduced width */
+        .th-food-quality {
+            width: 90px !important;
+        }
+
+        /* Reduced width */
+        .th-experience {
+            width: 100px !important;
+        }
+
+        /* Reduced width */
+        .th-packing {
+            width: 80px !important;
+        }
+
+        /* Reduced width */
+        .th-service {
+            width: 100px !important;
+        }
+
+        /* Reduced width */
+        .th-photo {
+            width: 50px !important;
+        }
+
+        /* Reduced width */
     </style>
 </head>
 
@@ -323,7 +448,8 @@
                                         </p>
                                         <div class="rating-stars mb-2">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star {{ $i <= round($averages->avg_delivery_time) ? 'filled' : '' }}"></i>
+                                                <i
+                                                    class="fas fa-star {{ $i <= round($averages->avg_delivery_time) ? 'filled' : '' }}"></i>
                                             @endfor
                                         </div>
                                         <div class="progress rating-progress">
@@ -333,7 +459,9 @@
                                                 aria-valuemax="5">
                                             </div>
                                         </div>
-                                        <small class="text-muted mt-1">{{ number_format($positivePercentages->positive_delivery_time, 1) }}% rated 4+</small>
+                                        <small
+                                            class="text-muted mt-1">{{ number_format($positivePercentages->positive_delivery_time, 1) }}%
+                                            rated 4+</small>
                                     </div>
                                 </div>
                             </div>
@@ -349,7 +477,8 @@
                                         </p>
                                         <div class="rating-stars mb-2">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star {{ $i <= round($averages->avg_food_quality) ? 'filled' : '' }}"></i>
+                                                <i
+                                                    class="fas fa-star {{ $i <= round($averages->avg_food_quality) ? 'filled' : '' }}"></i>
                                             @endfor
                                         </div>
                                         <div class="progress rating-progress">
@@ -359,7 +488,9 @@
                                                 aria-valuemax="5">
                                             </div>
                                         </div>
-                                        <small class="text-muted mt-1">{{ number_format($positivePercentages->positive_food_quality, 1) }}% rated 4+</small>
+                                        <small
+                                            class="text-muted mt-1">{{ number_format($positivePercentages->positive_food_quality, 1) }}%
+                                            rated 4+</small>
                                     </div>
                                 </div>
                             </div>
@@ -375,7 +506,8 @@
                                         </p>
                                         <div class="rating-stars mb-2">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star {{ $i <= round($averages->avg_overall_experience) ? 'filled' : '' }}"></i>
+                                                <i
+                                                    class="fas fa-star {{ $i <= round($averages->avg_overall_experience) ? 'filled' : '' }}"></i>
                                             @endfor
                                         </div>
                                         <div class="progress rating-progress">
@@ -385,7 +517,9 @@
                                                 aria-valuemin="0" aria-valuemax="5">
                                             </div>
                                         </div>
-                                        <small class="text-muted mt-1">{{ number_format($positivePercentages->positive_overall_experience, 1) }}% rated 4+</small>
+                                        <small
+                                            class="text-muted mt-1">{{ number_format($positivePercentages->positive_overall_experience, 1) }}%
+                                            rated 4+</small>
                                     </div>
                                 </div>
                             </div>
@@ -401,7 +535,8 @@
                                         </p>
                                         <div class="rating-stars mb-2">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star {{ $i <= round($averages->avg_packing) ? 'filled' : '' }}"></i>
+                                                <i
+                                                    class="fas fa-star {{ $i <= round($averages->avg_packing) ? 'filled' : '' }}"></i>
                                             @endfor
                                         </div>
                                         <div class="progress rating-progress">
@@ -411,7 +546,9 @@
                                                 aria-valuemax="5">
                                             </div>
                                         </div>
-                                        <small class="text-muted mt-1">{{ number_format($positivePercentages->positive_packing, 1) }}% rated 4+</small>
+                                        <small
+                                            class="text-muted mt-1">{{ number_format($positivePercentages->positive_packing, 1) }}%
+                                            rated 4+</small>
                                     </div>
                                 </div>
                             </div>
@@ -427,7 +564,8 @@
                                         </p>
                                         <div class="rating-stars mb-2">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star {{ $i <= round($averages->avg_delivery_service) ? 'filled' : '' }}"></i>
+                                                <i
+                                                    class="fas fa-star {{ $i <= round($averages->avg_delivery_service) ? 'filled' : '' }}"></i>
                                             @endfor
                                         </div>
                                         <div class="progress rating-progress">
@@ -437,7 +575,9 @@
                                                 aria-valuemin="0" aria-valuemax="5">
                                             </div>
                                         </div>
-                                        <small class="text-muted mt-1">{{ number_format($positivePercentages->positive_delivery_service, 1) }}% rated 4+</small>
+                                        <small
+                                            class="text-muted mt-1">{{ number_format($positivePercentages->positive_delivery_service, 1) }}%
+                                            rated 4+</small>
                                     </div>
                                 </div>
                             </div>
@@ -453,14 +593,15 @@
                                         </p>
                                         <div class="rating-stars mb-2">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star {{ $i <= round($averages->avg_overall_rating) ? 'filled' : '' }}"></i>
+                                                <i
+                                                    class="fas fa-star {{ $i <= round($averages->avg_overall_rating) ? 'filled' : '' }}"></i>
                                             @endfor
                                         </div>
                                         <div class="progress rating-progress">
                                             <div class="progress-bar bg-success" role="progressbar"
                                                 style="width: {{ ($averages->avg_overall_rating / 5) * 100 }}%"
-                                                aria-valuenow="{{ $averages->avg_overall_rating }}"
-                                                aria-valuemin="0" aria-valuemax="5">
+                                                aria-valuenow="{{ $averages->avg_overall_rating }}" aria-valuemin="0"
+                                                aria-valuemax="5">
                                             </div>
                                         </div>
                                         <small class="text-muted mt-1">Across all categories</small>
@@ -485,6 +626,19 @@
                         <p class="text-muted">No ratings available for the selected filters.</p>
                     @endif
                 </div>
+                <form method="GET" action="{{ route('dashboard.order_ratings.export') }}" class="mb-3">
+                    <div class="row g-2">
+                        <div class="col-md-4">
+                            <input type="date" name="export_date" class="form-control" placeholder="Select Date"
+                                required>
+                        </div>
+                        <div class="col-md-2">
+                            <button type="submit" class="btn btn-outline-red w-100">
+                                <i class="bi bi-file-earmark-excel me-1"></i> Export to Excel
+                            </button>
+                        </div>
+                    </div>
+                </form>
 
                 <!-- Search and Date Filter Form -->
                 <form method="GET" action="{{ route('dashboard.order_ratings') }}" class="mb-3">
@@ -572,35 +726,40 @@
                                     <td data-label="Delivery Time">
                                         <span class="rating-stars">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star {{ $i <= $rating->delivery_time ? 'filled' : '' }}"></i>
+                                                <i
+                                                    class="fas fa-star {{ $i <= $rating->delivery_time ? 'filled' : '' }}"></i>
                                             @endfor
                                         </span>
                                     </td>
                                     <td data-label="Food Quality">
                                         <span class="rating-stars">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star {{ $i <= $rating->food_quality ? 'filled' : '' }}"></i>
+                                                <i
+                                                    class="fas fa-star {{ $i <= $rating->food_quality ? 'filled' : '' }}"></i>
                                             @endfor
                                         </span>
                                     </td>
                                     <td data-label="Overall Experience">
                                         <span class="rating-stars">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star {{ $i <= $rating->overall_experience ? 'filled' : '' }}"></i>
+                                                <i
+                                                    class="fas fa-star {{ $i <= $rating->overall_experience ? 'filled' : '' }}"></i>
                                             @endfor
                                         </span>
                                     </td>
                                     <td data-label="Packing">
                                         <span class="rating-stars">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star {{ $i <= $rating->packing ? 'filled' : '' }}"></i>
+                                                <i
+                                                    class="fas fa-star {{ $i <= $rating->packing ? 'filled' : '' }}"></i>
                                             @endfor
                                         </span>
                                     </td>
                                     <td data-label="Delivery Service">
                                         <span class="rating-stars">
                                             @for ($i = 1; $i <= 5; $i++)
-                                                <i class="fas fa-star {{ $i <= $rating->delivery_service ? 'filled' : '' }}"></i>
+                                                <i
+                                                    class="fas fa-star {{ $i <= $rating->delivery_service ? 'filled' : '' }}"></i>
                                             @endfor
                                         </span>
                                     </td>

@@ -34,7 +34,8 @@ import subscriberRoutes from "./modules/subscriberRoutes";
 const baseRoutes = [
     {
         path: "/",
-        redirect: {name: "frontend.home"},
+        //redirect: {name: "frontend.home"},
+		redirect: {name: "auth.login"},
         name: "root"
     },
     {

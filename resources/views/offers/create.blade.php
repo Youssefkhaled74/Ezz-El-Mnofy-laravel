@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -143,7 +142,6 @@
         }
 
         .nav-back-btn {
-            color: var(--primary-red);
             font-weight: 500;
             transition: all 0.3s ease;
         }
@@ -152,98 +150,133 @@
             color: var(--dark-red);
             transform: translateX(-3px);
         }
+
+        .invalid-feedback {
+            display: none;
+        }
+
+        .is-invalid ~ .invalid-feedback {
+            display: block;
+        }
     </style>
 </head>
-
 <body>
     <!-- Navigation Bar -->
     @include('layouts.partials.navbar')
 
-
     <!-- Main Content -->
     <div class="container py-4">
         <div class="card shadow-sm border-0">
-            <div class="card-header bg-red text-white">
+            <div class="card-header bg-red text-white d-flex justify-content-between align-items-center">
                 <h2 class="mb-0"><i class="bi bi-tag me-2"></i>Create New Offer</h2>
+                <a href="{{ route('offers.index') }}" class="btn btn-outline-light btn-sm nav-back-btn">
+                    <i class="bi bi-arrow-left me-1"></i>Back to Offers
+                </a>
             </div>
             <div class="card-body">
+                <!-- Display General Errors -->
+                @if ($errors->any())
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+
                 <form action="{{ route('offers.store.brand') }}" method="POST" enctype="multipart/form-data">
-                    {{-- <form href="{{ route('offers.store') }}" method="POST" enctype="multipart/form-data"> --}}
                     @csrf
 
                     <!-- Brand Selection -->
-                    <div class="mb-4">
-                        <label for="brand_id" class="form-label fw-semibold"><i
-                                class="bi bi-shop-window me-2"></i>Brand</label>
-                        <select name="brand_id" id="brand_id" class="form-select">
-                            <option value="">Select Brand</option>
+                    {{-- <div class="mb-4">
+                        <label for="brand_id" class="form-label fw-semibold"><i class="bi bi-shop-window me-2"></i>Brand</label>
+                        <select name="brand_id" id="brandFilter" class="form-select @error('brand_id') is-invalid @enderror">
+                            <option value="" disabled {{ old('brand_id') ? '' : 'selected' }}>Select Brand</option>
                             @foreach ($brands as $brand)
-                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                <option value="{{ $brand->id }}" {{ old('brand_id') == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
                             @endforeach
                         </select>
-                    </div>
+                        @error('brand_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div> --}}
 
                     <!-- Offer Name -->
                     <div class="mb-4">
-                        <label for="name" class="form-label fw-semibold"><i
-                                class="bi bi-card-heading me-2"></i>Offer Name</label>
-                        <input type="text" class="form-control" name="name" id="name"
-                            placeholder="Enter offer name">
+                        <label for="name" class="form-label fw-semibold"><i class="bi bi-card-heading me-2"></i>Offer Name</label>
+                        <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{ old('name') }}" placeholder="Enter offer name">
+                        @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Slug -->
                     <div class="mb-4">
-                        <label for="slug" class="form-label fw-semibold"><i
-                                class="bi bi-link-45deg me-2"></i>Slug</label>
-                        <input type="text" class="form-control" name="slug" id="slug"
-                            placeholder="e.g., summer-sale-2025">
+                        <label for="slug" class="form-label fw-semibold"><i class="bi bi-link-45deg me-2"></i>Slug</label>
+                        <input type="text" class="form-control @error('slug') is-invalid @enderror" name="slug" id="slug" value="{{ old('slug') }}" placeholder="e.g., summer-sale-2025">
+                        @error('slug')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Discount Amount -->
                     <div class="mb-4">
-                        <label for="amount" class="form-label fw-semibold"><i class="bi bi-percent me-2"></i>Discount
-                            Amount</label>
+                        <label for="amount" class="form-label fw-semibold"><i class="bi bi-percent me-2"></i>Discount Amount</label>
                         <div class="input-group">
-                            <input type="number" step="0.01" class="form-control" name="amount" id="amount"
-                                placeholder="e.g., 10.50">
+                            <input type="number" step="0.01" class="form-control @error('amount') is-invalid @enderror" name="amount" id="amount" value="{{ old('amount') }}" placeholder="e.g., 10.50">
                             <span class="input-group-text">%</span>
                         </div>
+                        @error('amount')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Status -->
                     <div class="mb-4">
-                        <label for="status" class="form-label fw-semibold"><i
-                                class="bi bi-toggle-on me-2"></i>Status</label>
-                        <select name="status" id="status" class="form-select">
-                            <option value="5">Active</option>
-                            <option value="10">Inactive</option>
+                        <label for="status" class="form-label fw-semibold"><i class="bi bi-toggle-on me-2"></i>Status</label>
+                        <select name="status" id="status" class="form-select @error('status') is-invalid @enderror">
+                            <option value="5" {{ old('status') == '5' ? 'selected' : '' }}>Active</option>
+                            <option value="10" {{ old('status') == '10' ? 'selected' : '' }}>Inactive</option>
                         </select>
+                        @error('status')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Date Fields -->
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <label for="start_date" class="form-label fw-semibold"><i
-                                    class="bi bi-calendar-plus me-2"></i>Start Date</label>
-                            <input type="datetime-local" class="form-control" name="start_date" id="start_date">
+                            <label for="start_date" class="form-label fw-semibold"><i class="bi bi-calendar-plus me-2"></i>Start Date</label>
+                            <input type="datetime-local" class="form-control @error('start_date') is-invalid @enderror" name="start_date" id="start_date" value="{{ old('start_date') }}">
+                            @error('start_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="end_date" class="form-label fw-semibold"><i
-                                    class="bi bi-calendar-minus me-2"></i>End Date</label>
-                            <input type="datetime-local" class="form-control" name="end_date" id="end_date">
+                            <label for="end_date" class="form-label fw-semibold"><i class="bi bi-calendar-minus me-2"></i>End Date</label>
+                            <input type="datetime-local" class="form-control @error('end_date') is-invalid @enderror" name="end_date" id="end_date" value="{{ old('end_date') }}">
+                            @error('end_date')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
                     <!-- Image Upload -->
                     <div class="mb-4">
-                        <label for="image" class="form-label fw-semibold"><i class="bi bi-image me-2"></i>Offer
-                            Image</label>
+                        <label for="image" class="form-label fw-semibold"><i class="bi bi-image me-2"></i>Offer Image</label>
                         <div class="image-upload-container border rounded p-3 text-center">
-                            <input type="file" name="image" id="image" class="d-none"
-                                accept=".jpg,.jpeg,.png">
+                            <input type="file" name="image" id="image" class="d-none @error('image') is-invalid @enderror" accept=".jpg,.jpeg,.png">
                             <label for="image" class="cursor-pointer">
-                                <div class="preview-area mb-3"
-                                    style="height: 140px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; border: 2px dashed #ced4da; border-radius: 0.375rem;">
+                                <div class="preview-area mb-3" style="height: 140px; background-color: #f8f9fa; display: flex; align-items: center; justify-content: center; border: 2px dashed #ced4da; border-radius: 0.375rem;">
                                     <div class="text-center">
                                         <i class="bi bi-cloud-arrow-up fs-1 text-muted"></i>
                                         <p class="mb-0 text-muted">Click to upload image</p>
@@ -251,53 +284,44 @@
                                 </div>
                             </label>
                             <small class="text-muted d-block">Recommended size: 548x140 pixels (JPG, PNG)</small>
+                            @error('image')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
                     <!-- Items Selection with Search and Brand Filter -->
                     <div class="mb-4">
-                        <label class="form-label fw-semibold"><i class="bi bi-list-check me-2"></i>Select Items for
-                            this Offer</label>
-
+                        <label class="form-label fw-semibold"><i class="bi bi-list-check me-2"></i>Select Items for this Offer</label>
                         <div class="row mb-3">
                             <div class="col-md-6">
                                 <div class="input-group">
-                                    <span class="input-group-text bg-red text-white border-0"><i
-                                            class="bi bi-search"></i></span>
-                                    <input type="text" class="form-control" id="itemSearch"
-                                        placeholder="Search items..." aria-label="Search items">
+                                    <span class="input-group-text bg-red text-white border-0"><i class="bi bi-search"></i></span>
+                                    <input type="text" class="form-control" id="itemSearch" placeholder="Search items..." aria-label="Search items">
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <select class="form-select" id="brandFilter">
-                                    <option value="">All Brands</option>
-                                    @foreach ($brands as $brand)
-                                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
                         </div>
-
                         <div class="row items-container" style="max-height: 300px; overflow-y: auto;">
                             @foreach ($items as $item)
                                 <div class="col-md-4 item-option" data-brand="{{ $item->brand_id }}">
                                     <div class="form-check mb-2">
-                                        <input class="form-check-input" type="checkbox" name="items[]"
-                                            value="{{ $item->id }}" id="item{{ $item->id }}">
+                                        <input class="form-check-input" type="checkbox" name="items[]" value="{{ $item->id }}" id="item{{ $item->id }}" {{ in_array($item->id, old('items', [])) ? 'checked' : '' }}>
                                         <label class="form-check-label" for="item{{ $item->id }}">
-                                            {{ $item->name }} <span
-                                                class="badge bg-secondary ms-2">{{ $item->brand->name ?? 'No Brand' }}</span>
+                                            {{ $item->name['en'] ?? 'N/A' }} <span class="badge bg-secondary ms-2">{{ $item->brand->name ?? 'No Brand' }}</span>
                                         </label>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
+                        @error('items')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <!-- Submit Button -->
                     <div class="d-flex justify-content-end mt-4">
                         <button type="submit" class="btn btn-red btn-lg">
-                            <i class="bi bi-plus-circle me-2"></i> Create Offer
+                            <i class="bi bi-plus-circle me-2"></i>Create Offer
                         </button>
                     </div>
                 </form>
@@ -308,7 +332,7 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- JavaScript for Search and Brand Filter -->
+    <!-- JavaScript for Search, Brand Filter, and Image Preview -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Search and filter functionality
@@ -343,8 +367,7 @@
                 if (file) {
                     const reader = new FileReader();
                     reader.onload = function(event) {
-                        previewArea.innerHTML =
-                            `<img src="${event.target.result}" class="img-fluid" style="max-height: 100%; object-fit: contain;">`;
+                        previewArea.innerHTML = `<img src="${event.target.result}" class="img-fluid" style="max-height: 100%; object-fit: contain;">`;
                     };
                     reader.readAsDataURL(file);
                 }
@@ -352,5 +375,4 @@
         });
     </script>
 </body>
-
 </html>

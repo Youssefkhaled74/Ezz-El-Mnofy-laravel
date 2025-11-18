@@ -66,20 +66,6 @@
                     </div>
 
                     <div class="form-col-12 sm:form-col-6">
-                        <label for="country_code" class="db-field-title required">
-                            {{ $t("label.country_code") }}
-                        </label>
-                        <vue-select class="db-field-control f-b-custom-select" id="country_code"
-                            v-bind:class="errors.company_country_code ? 'is-invalid' : ''"
-                            v-model="form.company_country_code" :options="countryCodes" label-by="country_name"
-                            value-by="country_code" :closeOnSelect="true" :searchable="true" :clearOnClose="true"
-                            placeholder="--" search-placeholder="--" />
-                        <small class="db-field-alert" v-if="errors.company_country_code">{{
-                            errors.company_country_code[0]
-                        }}</small>
-                    </div>
-
-                    <div class="form-col-12 sm:form-col-6">
                         <label for="company_zip_code" class="db-field-title required">
                             {{ $t("label.zip_code") }}</label>
                         <input v-model="form.company_zip_code" v-bind:class="errors.company_zip_code ? 'invalid' : ''"
@@ -95,7 +81,7 @@
                         </label>
                         <textarea v-model="form.company_address" v-bind:class="errors.company_address ? 'invalid' : ''"
                             id="address" class="db-field-control">
-                                                                                                            </textarea>
+                        </textarea>
                         <small class="db-field-alert" v-if="errors.company_address">{{
                             errors.company_address[0]
                         }}</small>
@@ -133,7 +119,6 @@ export default {
                 company_website: "",
                 company_city: "",
                 company_state: "",
-                company_country_code: null,
                 company_zip_code: "",
                 company_address: "",
             },
@@ -143,11 +128,6 @@ export default {
     mounted() {
         this.loadInfo();
     },
-    computed: {
-        countryCodes: function () {
-            return this.$store.getters['countryCode/lists'];
-        },
-    },
     methods: {
         phoneNumber(e) {
             return appService.phoneNumber(e);
@@ -155,7 +135,6 @@ export default {
         loadInfo: async function () {
             try {
                 this.loading.isActive = true;
-               await this.$store.dispatch('countryCode/lists');
                 this.$store
                     .dispatch("company/lists")
                     .then((res) => {
@@ -166,8 +145,6 @@ export default {
                             company_website: res.data.data.company_website,
                             company_city: res.data.data.company_city,
                             company_state: res.data.data.company_state,
-                            company_country_code:
-                                res.data.data.company_country_code,
                             company_zip_code: res.data.data.company_zip_code,
                             company_address: res.data.data.company_address,
                         };

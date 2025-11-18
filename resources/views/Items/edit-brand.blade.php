@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Change Brand for {{ $item->name }}</title>
+    <title>Change Brand for {{ $item->name['en'] ?? 'N/A' }}</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -117,17 +116,15 @@
         }
     </style>
 </head>
-
 <body>
     <!-- Navigation Bar -->
     @include('layouts.partials.navbar')
-
 
     <!-- Main Content -->
     <div class="container py-4">
         <div class="card shadow-sm border-0">
             <div class="card-header bg-red text-white">
-                <h2 class="mb-0"><i class="bi bi-shop-window me-2"></i>Change Brand for {{ $item->name }}</h2>
+                <h2 class="mb-0"><i class="bi bi-shop-window me-2"></i>Change Brand for {{ $item->name['en'] ?? 'N/A' }}</h2>
             </div>
             <div class="card-body">
                 <form action="{{ route('items.update-brand', $item) }}" method="POST">
@@ -136,13 +133,11 @@
 
                     <!-- Brand Selection -->
                     <div class="mb-4">
-                        <label for="brand_id" class="form-label fw-semibold"><i
-                                class="bi bi-shop-window me-2"></i>Brand</label>
+                        <label for="brand_id" class="form-label fw-semibold"><i class="bi bi-shop-window me-2"></i>Brand</label>
                         <select name="brand_id" id="brand_id" class="form-select" required>
                             <option value="">Select Brand</option>
                             @foreach ($brands as $brand)
-                                <option value="{{ $brand->id }}"
-                                    {{ old('brand_id', $item->brand_id) == $brand->id ? 'selected' : '' }}>
+                                <option value="{{ $brand->id }}" {{ old('brand_id', $item->brand_id) == $brand->id ? 'selected' : '' }}>
                                     {{ $brand->name }}
                                 </option>
                             @endforeach
@@ -169,5 +164,4 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

@@ -30,37 +30,9 @@
                     </ul>
                 </div>
             </div>
-            <nav class="items-center justify-center gap-6 hidden lg:flex">
-                <router-link :to="{ name: 'frontend.home' }"
-                    :class="checkIsPathAndRoutePathSame('/home') ? 'text-primary' : ''"
-                    class="capitalize text-sm font-medium text-heading">
-                    {{ $t('menu.home') }}
-                </router-link>
-                <router-link :to="{ name: 'frontend.menu', query: { s: categoryProps.slug } }"
-                    :class="checkIsPathAndRoutePathSame('/menu') ? 'text-primary' : ''"
-                    class="capitalize text-sm font-medium text-heading">
-                    {{ $t('label.menu') }}
-                </router-link>
-                <router-link :to="{ name: 'frontend.offers' }"
-                    :class="checkIsPathAndRoutePathSame('/offers') ? 'text-primary' : ''"
-                    class="capitalize text-sm font-medium text-heading">
-                    {{ $t('label.offers') }}
-                </router-link>
-            </nav>
+           
 
             <div class="flex flex-col items-center justify-end gap-3 w-full mt-4 lg:flex-row lg:w-fit lg:mt-0">
-                <form @submit.prevent="search"
-                    class="header-search-group group flex items-center justify-center border border-solid gap-2 px-2 w-full lg:w-52 h-8 rounded-3xl transition border-[#EFF0F6] bg-[#EFF0F6] focus-within:bg-white focus-within:border-primary">
-                    <button type="submit" class="header-search-submit">
-                        <i class="lab lab-search-normal"></i>
-                    </button>
-                    <input type="search" v-model="searchItem" :placeholder="$t('button.search')"
-                        class="header-search-field w-full h-full text-xs appearance-none placeholder:font-normal placeholder:text-paragraph text-heading">
-                    <button type="button" @click.prevent="searchReset"
-                        class="header-search-button transition invisible group-focus-within:visible">
-                        <i class="lab lab-close-circle-line lab-font-size-16 lab-font-weight-600 text-red-500"></i>
-                    </button>
-                </form>
                 <div v-if="setting.site_language_switch === enums.activityEnum.ENABLE"
                     class="hidden lg:block relative dropdown-group w-full sm:w-fit">
                     <button

@@ -1,6 +1,6 @@
 <template>
     <LoadingComponent :props="loading" />
-    <SmSidebarModalCreateComponent :props="addButton" />
+<!-- <SmSidebarModalCreateComponent :props="addButton" /> -->
 
     <div id="sidebar" class="drawer">
         <div class="drawer-header">

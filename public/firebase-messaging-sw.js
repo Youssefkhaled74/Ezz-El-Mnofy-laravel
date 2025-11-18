@@ -1,13 +1,13 @@
 importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js');
 importScripts('https://www.gstatic.com/firebasejs/8.10.1/firebase-messaging.js');
 let config = {
-        apiKey: "AIzaSyDg1xBSwmHKV0usIKxTFL5a6fFTb4s3XVM",
-        authDomain: "foodking-inilabs.firebaseapp.com",
-        projectId: "foodking-inilabs",
-        storageBucket: "foodking-inilabs.appspot.com",
-        messagingSenderId: "843456771665",
-        appId: "1:843456771665:web:fb1e3115e9e17ee1582a70",
-        measurementId: "G-GSJPS921XW",
+        apiKey: "AIzaSyA6phFMDk3GUYUTSOLOMmzRf_dn_rW40QU",
+        authDomain: "ezz-el-mnofy.firebaseapp.com",
+        projectId: "ezz-el-mnofy",
+        storageBucket: "ezz-el-mnofy.firebasestorage.app",
+        messagingSenderId: "220371239685",
+        appId: "1:220371239685:web:54b3f70965e5c3d730ad6c",
+        measurementId: "G-546TRTB2PF",
  };
 firebase.initializeApp(config);
 const messaging = firebase.messaging();

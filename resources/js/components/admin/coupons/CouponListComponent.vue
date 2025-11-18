@@ -116,7 +116,7 @@
                             <th class="db-table-head-th">{{ $t("label.start_date") }}</th>
                             <th class="db-table-head-th">{{ $t("label.end_date") }}</th>
                             <th class="db-table-head-th hidden-print"
-                                v-if="permissionChecker('coupons_show') || permissionChecker('coupons_edit') || permissionChecker('coupons_delete')">
+                                v-if="permissionChecker('coupons_show') || permissionChecker('coupons_delete')">
                                 {{ $t("label.action") }}</th>
                         </tr>
                     </thead>
@@ -136,12 +136,10 @@
                             <td class="db-table-body-td">{{ coupon.convert_start_date }}</td>
                             <td class="db-table-body-td">{{ coupon.convert_end_date }}</td>
                             <td class="db-table-body-td hidden-print"
-                                v-if="permissionChecker('coupons_show') || permissionChecker('coupons_edit') || permissionChecker('coupons_delete')">
+                                v-if="permissionChecker('coupons_show') || permissionChecker('coupons_delete')">
                                 <div class="flex justify-start items-center sm:items-start sm:justify-start gap-1.5">
                                     <SmIconViewComponent :link="'admin.coupon.show'" :id="coupon.id"
                                         v-if="permissionChecker('coupons_show')" />
-                                    <SmIconSidebarModalEditComponent @click="edit(coupon)"
-                                        v-if="permissionChecker('coupons_edit')" />
                                     <SmIconDeleteComponent @click="destroy(coupon.id)"
                                         v-if="permissionChecker('coupons_delete')" />
                                 </div>
@@ -161,6 +159,7 @@
         </div>
     </div>
 </template>
+
 <script>
 import LoadingComponent from "../components/LoadingComponent";
 import CouponCreateComponent from "./CouponCreateComponent";
@@ -173,7 +172,6 @@ import taxTypeEnum from "../../../enums/modules/taxTypeEnum";
 import TableLimitComponent from "../components/TableLimitComponent";
 import SmIconDeleteComponent from "../components/buttons/SmIconDeleteComponent";
 import SmViewComponent from "../components/buttons/SmViewComponent";
-import SmIconSidebarModalEditComponent from "../components/buttons/SmIconSidebarModalEditComponent";
 import FilterComponent from "../components/buttons/collapse/FilterComponent";
 import ExportComponent from "../components/buttons/export/ExportComponent";
 import print from 'vue3-print-nb';
@@ -184,11 +182,9 @@ import "@vuepic/vue-datepicker/dist/main.css";
 import SmIconViewComponent from "../components/buttons/SmIconViewComponent";
 import displayModeEnum from "../../../enums/modules/displayModeEnum";
 
-
 export default {
     name: "CouponListComponent",
     components: {
-        SmIconSidebarModalEditComponent,
         TableLimitComponent,
         PaginationSMBox,
         PaginationBox,
@@ -310,28 +306,6 @@ export default {
                 this.loading.isActive = false;
             });
         },
-        edit: function (coupon) {
-            appService.sideDrawerShow();
-            this.loading.isActive = true;
-            this.$store.dispatch("coupon/edit", coupon.id).then((res) => {
-                this.loading.isActive = false;
-                this.props.errors = {};
-                this.props.form = {
-                    name: coupon.name,
-                    description: coupon.description,
-                    code: coupon.code,
-                    discount: coupon.flat_discount,
-                    discount_type: coupon.discount_type,
-                    start_date: coupon.start_date,
-                    end_date: coupon.end_date,
-                    minimum_order: coupon.minimum_order_flat_amount,
-                    maximum_discount: coupon.maximum_flat_discount,
-                    limit_per_user: coupon.limit_per_user,
-                };
-            }).catch((err) => {
-                alertService.error(err.response.data.message);
-            });
-        },
         destroy: function (id) {
             appService.destroyConfirmation().then((res) => {
                 try {
@@ -357,7 +331,6 @@ export default {
                 this.loading.isActive = false;
             });
         },
-
         xls: function () {
             this.loading.isActive = true;
             this.$store.dispatch('coupon/export', this.props.search).then(res => {
@@ -375,8 +348,8 @@ export default {
         }
     },
 };
-
 </script>
+
 <style scoped>
 @media print {
     .hidden-print {

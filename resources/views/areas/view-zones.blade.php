@@ -104,7 +104,7 @@
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByGILjqDwyW9fMzjnXSCcPB11K8qboJEI"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB8sZjSpTijQt3lC9CoIMr0F1izwoJrXjM"></script>
     <script>
         function initMap() {
             const map = new google.maps.Map(document.getElementById("map"), {
